@@ -17,15 +17,24 @@ class BenefitController extends Controller
         return view('member.benefits.index', compact('benefits'));
     }
 
+    public function myRequests()
+    {
+        $benefits = auth()->user()->benefits()
+            ->latest()
+            ->paginate(12);
+
+        return view('member.benefits.my-requests', compact('benefits'));
+    }
+
     public function create()
     {
         $benefitTypes = [
-            'medical_assistance' => 'Medical Assistance',
-            'educational_support' => 'Educational Support',
-            'emergency_fund' => 'Emergency Fund',
-            'livelihood_support' => 'Livelihood Support',
-            'housing_assistance' => 'Housing Assistance',
-            'other' => 'Other',
+            'hospitalization' => 'Hospitalization Benefit',
+            'burial' => 'Burial Assistance',
+            'animal_bite' => 'Animal Bite Assistance',
+            'accidental' => 'Accidental Assistance',
+            'outpatient' => 'Outpatient Benefit',
+            'birthday' => 'Birthday Gift',
         ];
 
         return view('member.benefits.create', compact('benefitTypes'));
@@ -54,7 +63,10 @@ class BenefitController extends Controller
             $data['supporting_documents'] = $documents;
         }
 
-        Benefit::create($data);
+        $benefit = Benefit::create($data);
+
+        // Create notification for new application
+        $this->createBenefitNotification($benefit, 'submitted');
 
         return redirect()->route('member.benefits.index')
             ->with('success', 'Benefit application submitted successfully.');
@@ -84,12 +96,12 @@ class BenefitController extends Controller
         }
 
         $benefitTypes = [
-            'medical_assistance' => 'Medical Assistance',
-            'educational_support' => 'Educational Support',
-            'emergency_fund' => 'Emergency Fund',
-            'livelihood_support' => 'Livelihood Support',
-            'housing_assistance' => 'Housing Assistance',
-            'other' => 'Other',
+            'hospitalization' => 'Hospitalization Benefit',
+            'burial' => 'Burial Assistance',
+            'animal_bite' => 'Animal Bite Assistance',
+            'accidental' => 'Accidental Assistance',
+            'outpatient' => 'Outpatient Benefit',
+            'birthday' => 'Birthday Gift',
         ];
 
         return view('member.benefits.edit', compact('benefit', 'benefitTypes'));
@@ -150,5 +162,12 @@ class BenefitController extends Controller
 
         return redirect()->route('member.benefits.index')
             ->with('success', 'Benefit application deleted successfully.');
+    }
+
+    private function createBenefitNotification($benefit, $action)
+    {
+        // In a real application, this would create a database record
+        // For now, we'll just log it or handle it in the notification system
+        \Log::info("Benefit notification created: {$benefit->id} - {$action}");
     }
 }

@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\BenefitController as AdminBenefitController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\ProfileController as MemberProfileController;
 use App\Http\Controllers\Member\BenefitController as MemberBenefitController;
+use App\Http\Controllers\Member\ContributionController as MemberContributionController;
+use App\Http\Controllers\Member\NotificationController as MemberNotificationController;
 use App\Http\Controllers\Treasurer\DashboardController as TreasurerDashboardController;
 use App\Http\Controllers\Treasurer\MemberController as TreasurerMemberController;
 use App\Http\Controllers\Treasurer\ContributionController as TreasurerContributionController;
@@ -62,7 +64,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profile/edit', [MemberProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [MemberProfileController::class, 'update'])->name('profile.update');
         Route::put('/profile/password', [MemberProfileController::class, 'updatePassword'])->name('profile.password');
+        Route::get('/benefits/my-requests', [MemberBenefitController::class, 'myRequests'])->name('benefits.my-requests');
         Route::resource('benefits', MemberBenefitController::class);
+        Route::resource('contributions', MemberContributionController::class);
+        Route::get('/notifications', [MemberNotificationController::class, 'index'])->name('notifications.index');
+        Route::post('/notifications/mark-as-read', [MemberNotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+        Route::post('/notifications/clear-all', [MemberNotificationController::class, 'clearAll'])->name('notifications.clear-all');
     });
 
     // Barangay Treasurer Routes
