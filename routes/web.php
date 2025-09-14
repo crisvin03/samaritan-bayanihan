@@ -20,8 +20,13 @@ Route::get('/', function () {
 });
 
 // Authentication Routes
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'showLoginSelect'])->name('login.select');
+Route::get('/login/member', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login/member', [AuthController::class, 'login']);
+Route::get('/login/admin', [AuthController::class, 'showAdminLogin'])->name('admin.login');
+Route::post('/login/admin', [AuthController::class, 'adminLogin']);
+Route::get('/login/treasurer', [AuthController::class, 'showTreasurerLogin'])->name('treasurer.login');
+Route::post('/login/treasurer', [AuthController::class, 'treasurerLogin']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

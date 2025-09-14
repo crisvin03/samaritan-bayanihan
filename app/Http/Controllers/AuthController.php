@@ -15,6 +15,21 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function showLoginSelect()
+    {
+        return view('auth.login-select');
+    }
+
+    public function showAdminLogin()
+    {
+        return view('auth.admin-login');
+    }
+
+    public function showTreasurerLogin()
+    {
+        return view('auth.treasurer-login');
+    }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -25,6 +40,60 @@ class AuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
+        }
+
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials do not match our records.'],
+        ]);
+    }
+
+    public function adminLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = Auth::user();
+            
+            // Check if user is admin
+            if (!$user->isAdmin()) {
+                Auth::logout();
+                throw ValidationException::withMessages([
+                    'email' => ['Access denied. Admin privileges required.'],
+                ]);
+            }
+
+            $request->session()->regenerate();
+            return redirect()->intended('/admin/dashboard');
+        }
+
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials do not match our records.'],
+        ]);
+    }
+
+    public function treasurerLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = Auth::user();
+            
+            // Check if user is barangay treasurer
+            if (!$user->isBarangayTreasurer()) {
+                Auth::logout();
+                throw ValidationException::withMessages([
+                    'email' => ['Access denied. Treasurer privileges required.'],
+                ]);
+            }
+
+            $request->session()->regenerate();
+            return redirect()->intended('/treasurer/dashboard');
         }
 
         throw ValidationException::withMessages([

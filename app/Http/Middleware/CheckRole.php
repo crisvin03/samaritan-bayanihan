@@ -16,7 +16,15 @@ class CheckRole
     public function handle(Request $request, Closure $next, string $role): Response
     {
         if (!auth()->check()) {
-            return redirect()->route('login');
+            // Redirect to appropriate login page based on role
+            switch ($role) {
+                case 'admin':
+                    return redirect()->route('admin.login');
+                case 'barangay_treasurer':
+                    return redirect()->route('treasurer.login');
+                default:
+                    return redirect()->route('login');
+            }
         }
 
         $user = auth()->user();
