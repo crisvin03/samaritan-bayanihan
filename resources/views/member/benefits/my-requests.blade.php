@@ -1,26 +1,137 @@
+
 @extends('member.layouts.app')
 
 @section('title', 'My Benefit Requests')
 @section('page-title', 'My Benefit Requests')
 @section('page-description', 'Track the status of your benefit applications')
 
+@push('styles')
+<style>
+    /* Custom Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes slideInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-10px) rotate(2deg); }
+    }
+    
+    @keyframes bounceGentle {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+    
+    @keyframes cardFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-3px); }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out;
+    }
+    
+    .animate-fade-in-delayed {
+        animation: fadeIn 0.8s ease-out 0.2s both;
+    }
+    
+    .animate-slide-in-left {
+        animation: slideInLeft 0.8s ease-out;
+    }
+    
+    .animate-slide-in-left-delayed {
+        animation: slideInLeft 0.8s ease-out 0.3s both;
+    }
+    
+    .animate-slide-in-right {
+        animation: slideInRight 0.8s ease-out 0.4s both;
+    }
+    
+    .animate-slide-in-up {
+        animation: slideInUp 0.8s ease-out 0.5s both;
+    }
+    
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .animate-float-delayed {
+        animation: float 6s ease-in-out infinite 2s;
+    }
+    
+    .animate-bounce-gentle {
+        animation: bounceGentle 2s ease-in-out infinite;
+    }
+    
+    .animate-card-float {
+        animation: cardFloat 4s ease-in-out infinite;
+    }
+    
+    .animate-card-float-delayed {
+        animation: cardFloat 4s ease-in-out infinite 1s;
+    }
+    
+    /* Hover Effects */
+    .group:hover .group-hover\:scale-110 {
+        transform: scale(1.1);
+    }
+    
+    /* Glassmorphism Effect */
+    .backdrop-blur-sm {
+        backdrop-filter: blur(4px);
+    }
+</style>
+@endpush
+
 @section('content')
-    <!-- Professional Page Header -->
+    <!-- Professional Page Header Card -->
     <div class="mb-10">
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-4xl font-bold text-gray-900 mb-3">My Benefit Requests</h1>
-                <p class="text-lg text-gray-600">Monitor and track the progress of your benefit applications</p>
-            </div>
-            <div class="hidden md:flex items-center space-x-4">
-                <div class="text-right">
-                    <p class="text-sm text-gray-500">Total Applications</p>
-                    <p class="text-2xl font-bold text-blue-600">{{ $benefits->count() }}</p>
-                </div>
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
+        <div class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 rounded-3xl p-10 shadow-2xl overflow-hidden">
+            <!-- Animated Background Elements -->
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 animate-pulse"></div>
+            <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full -translate-y-48 translate-x-48 animate-float"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-purple-500/10 to-transparent rounded-full translate-y-40 -translate-x-40 animate-float-delayed"></div>
+            
+            <div class="relative z-10">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <div class="w-20 h-20 bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center shadow-2xl animate-bounce-gentle">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="text-4xl font-bold text-white mb-2 animate-slide-in-left">My Benefit Requests</h1>
+                            <p class="text-blue-100 text-xl animate-slide-in-left-delayed">Monitor and track the progress of your benefit applications</p>
+                        </div>
+                    </div>
+                    <div class="hidden lg:flex items-center space-x-8 animate-slide-in-right">
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-white">{{ now()->format('l, M d, Y') }}</div>
+                            <div class="text-xs text-blue-200">{{ now()->format('H:i A') }}</div>
+                        </div>
+                        <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
