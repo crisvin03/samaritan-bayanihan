@@ -10,7 +10,6 @@ use App\Http\Controllers\Member\DashboardController as MemberDashboardController
 use App\Http\Controllers\Member\ProfileController as MemberProfileController;
 use App\Http\Controllers\Member\BenefitController as MemberBenefitController;
 use App\Http\Controllers\Member\ContributionController as MemberContributionController;
-use App\Http\Controllers\Member\NotificationController as MemberNotificationController;
 use App\Http\Controllers\Treasurer\DashboardController as TreasurerDashboardController;
 use App\Http\Controllers\Treasurer\MemberController as TreasurerMemberController;
 use App\Http\Controllers\Treasurer\ContributionController as TreasurerContributionController;
@@ -20,13 +19,8 @@ Route::get('/', function () {
 });
 
 // Authentication Routes
-Route::get('/login', [AuthController::class, 'showLoginSelect'])->name('login.select');
-Route::get('/login/member', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login/member', [AuthController::class, 'login']);
-Route::get('/login/admin', [AuthController::class, 'showAdminLogin'])->name('admin.login');
-Route::post('/login/admin', [AuthController::class, 'adminLogin']);
-Route::get('/login/treasurer', [AuthController::class, 'showTreasurerLogin'])->name('treasurer.login');
-Route::post('/login/treasurer', [AuthController::class, 'treasurerLogin']);
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -69,12 +63,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profile/edit', [MemberProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [MemberProfileController::class, 'update'])->name('profile.update');
         Route::put('/profile/password', [MemberProfileController::class, 'updatePassword'])->name('profile.password');
-        Route::get('/benefits/my-requests', [MemberBenefitController::class, 'myRequests'])->name('benefits.my-requests');
         Route::resource('benefits', MemberBenefitController::class);
-        Route::resource('contributions', MemberContributionController::class);
-        Route::get('/notifications', [MemberNotificationController::class, 'index'])->name('notifications.index');
-        Route::post('/notifications/mark-as-read', [MemberNotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
-        Route::post('/notifications/clear-all', [MemberNotificationController::class, 'clearAll'])->name('notifications.clear-all');
+        Route::resource('contributions', MemberContributionController::class)->only(['index', 'show']);
+        Route::get('contributions/export', [MemberContributionController::class, 'export'])->name('contributions.export');
+        Route::get('contributions/print', [MemberContributionController::class, 'print'])->name('contributions.print');
     });
 
     // Barangay Treasurer Routes

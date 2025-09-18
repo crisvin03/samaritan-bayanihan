@@ -14,10 +14,10 @@ class DashboardController extends Controller
         $user = auth()->user();
         
         $stats = [
-            'total_contributions' => $user->contributions()->where('status', 'validated')->sum('amount'),
-            'pending_benefits' => $user->benefits->where('status', 'pending')->count(),
-            'approved_benefits' => $user->benefits->where('status', 'approved')->count(),
-            'disbursed_benefits' => $user->benefits->where('status', 'disbursed')->count(),
+            'total_contributions' => $user->contributions()->validated()->sum('amount'),
+            'pending_benefits' => $user->benefits()->where('status', 'pending')->count(),
+            'approved_benefits' => $user->benefits()->where('status', 'approved')->count(),
+            'disbursed_benefits' => $user->benefits()->where('status', 'disbursed')->count(),
         ];
 
         $recent_contributions = $user->contributions()
@@ -32,7 +32,7 @@ class DashboardController extends Controller
             ->get();
 
         $contribution_history = $user->contributions()
-            ->where('status', 'validated')
+            ->validated()
             ->selectRaw('DATE(contribution_date) as date, SUM(amount) as total')
             ->groupBy('date')
             ->orderBy('date', 'desc')

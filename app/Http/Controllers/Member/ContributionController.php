@@ -93,11 +93,11 @@ class ContributionController extends Controller
             fputcsv($file, [
                 'Date',
                 'Amount',
-                'Payment Method',
+                'Type',
                 'Reference Number',
                 'Status',
                 'Recorded By',
-                'Notes'
+                'Description'
             ]);
             
             // CSV data
@@ -105,11 +105,11 @@ class ContributionController extends Controller
                 fputcsv($file, [
                     $contribution->contribution_date->format('Y-m-d'),
                     number_format($contribution->amount, 2),
-                    $contribution->payment_method,
+                    $contribution->type ?? '',
                     $contribution->reference_number ?? '',
                     $contribution->status,
                     $contribution->recordedBy->name ?? 'System',
-                    $contribution->notes ?? ''
+                    $contribution->description ?? ''
                 ]);
             }
             

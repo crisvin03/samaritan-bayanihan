@@ -92,7 +92,7 @@ class MemberController extends Controller
 
         $member->load(['contributions', 'benefits']);
         
-        $totalContributions = $member->contributions->validated()->sum('amount');
+        $totalContributions = $member->contributions->where('status', 'validated')->sum('amount');
         $pendingBenefits = $member->benefits->where('status', 'pending')->count();
         $approvedBenefits = $member->benefits->where('status', 'approved')->count();
 
