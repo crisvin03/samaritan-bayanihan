@@ -173,7 +173,7 @@
             </div>
 
             <!-- Contact Information Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 mb-4 sm:mb-6 lg:mb-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mb-4 sm:mb-6 lg:mb-8">
                 <!-- Email -->
                 <div class="group bg-gradient-to-br from-white to-blue-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
                     <div class="flex items-center space-x-2 mb-2">
@@ -202,6 +202,21 @@
                         </div>
                     </div>
                     <p class="text-xs sm:text-sm font-medium text-gray-900 leading-tight">{{ auth()->user()->phone_number ?? 'Not provided' }}</p>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="group bg-gradient-to-br from-white to-pink-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-pink-100 hover:border-pink-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-md flex items-center justify-center shadow-lg">
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-pink-600 uppercase tracking-wide">Date of Birth</h4>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm font-medium text-gray-900 leading-tight">{{ auth()->user()->birth_date ? \Carbon\Carbon::parse(auth()->user()->birth_date)->format('M d, Y') : 'Not provided' }}</p>
                 </div>
 
                 <!-- Address -->
