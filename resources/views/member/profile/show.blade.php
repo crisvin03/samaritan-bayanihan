@@ -266,25 +266,189 @@
                 </div>
             </div>
 
-            <!-- Document Upload Section -->
-            <div class="bg-gradient-to-br from-white to-gray-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-gray-100 hover:border-gray-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
-                <div class="flex items-center space-x-2 mb-3">
-                    <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-gray-500 to-gray-600 rounded-md flex items-center justify-center shadow-lg">
+            <!-- Online Passbook Section -->
+            <div class="bg-gradient-to-br from-white to-blue-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
+                <div class="flex items-center space-x-2 mb-4">
+                    <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-md flex items-center justify-center shadow-lg">
                         <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">ID/Verification Documents</h4>
-                        <p class="text-xs text-gray-600 leading-tight">Upload your identification documents for verification</p>
+                        <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">Online Passbook</h4>
+                        <p class="text-xs text-gray-600 leading-tight">Your digital savings passbook with benefits</p>
                     </div>
                 </div>
-                <div class="border-2 border-dashed border-gray-300 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-300">
-                    <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                    </svg>
-                    <p class="text-gray-600 text-xs sm:text-sm mb-1 leading-tight">Click to upload or drag and drop</p>
-                    <p class="text-xs text-gray-400">PNG, JPG, PDF up to 10MB</p>
+
+                <!-- Passbook Design -->
+                <div class="bg-white border-2 border-gray-200 rounded-lg shadow-lg overflow-hidden">
+                    <!-- Passbook Header -->
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3 sm:p-4">
+                        <div class="text-center">
+                            <h3 class="text-sm sm:text-base lg:text-lg font-bold">SAMARITAN BAYANIHAN</h3>
+                            <p class="text-xs sm:text-sm">Savings Program with FREE BENEFITS</p>
+                        </div>
+                    </div>
+
+                    <!-- Passbook Content -->
+                    <div class="p-3 sm:p-4">
+                        <!-- Member Information -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                            <!-- Left Column - Member Details -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Account No:</span>
+                                    <span class="text-xs font-medium text-gray-900">#{{ str_pad(auth()->user()->id, 6, '0', STR_PAD_LEFT) }}</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Name:</span>
+                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->name }}</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Date of Membership:</span>
+                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->created_at->format('M d, Y') }}</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Date of Birth:</span>
+                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->birth_date ? \Carbon\Carbon::parse(auth()->user()->birth_date)->format('M d, Y') : 'Not provided' }}</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Contact:</span>
+                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->phone_number ?? 'Not provided' }}</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Address:</span>
+                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->address ?? 'Not provided' }}</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Barangay:</span>
+                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->barangay ?? 'Not provided' }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Right Column - Benefits -->
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-900 mb-2 text-center">MGA BENEPISYO</h4>
+                                <p class="text-xs text-gray-600 mb-3 text-center">Sa halagang P10 na savings kada linggo, maaari mong ma-enjoy ang mga sumusunod na BENEPISYO:</p>
+                                
+                                <div class="grid grid-cols-1 gap-2">
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold text-gray-900">Burial Assistance</p>
+                                            <p class="text-xs text-gray-600">Mula P1,500 hanggang P50,000</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold text-gray-900">Accidental Assistance</p>
+                                            <p class="text-xs text-gray-600">Mula P500 hanggang P10,000</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold text-gray-900">Hospitalization Benefit</p>
+                                            <p class="text-xs text-gray-600">Mula P500 hanggang P10,000</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold text-gray-900">Maternity Benefit</p>
+                                            <p class="text-xs text-gray-600">Mula P500 hanggang P1,500</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold text-gray-900">Animal Bite Benefits</p>
+                                            <p class="text-xs text-gray-600">P300 pesos na tulong-pinansiyal</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold text-gray-900">Birthday Cake o Cash Gift</p>
+                                            <p class="text-xs text-gray-600">P300 pesos na regalo tuwing kaarawan</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold text-gray-900">Outpatient Benefit</p>
+                                            <p class="text-xs text-gray-600">P200 pesos na benepisyo</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold text-gray-900">Walang Age Limit</p>
+                                            <p class="text-xs text-gray-600">Lahat ay pwede maging miyembro</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Passbook Footer -->
+                        <div class="border-t border-gray-200 pt-3 mt-4">
+                            <div class="flex justify-between items-center">
+                                <div class="text-center">
+                                    <p class="text-xs font-semibold text-gray-600">PASSBOOK NO.</p>
+                                    <p class="text-sm font-bold text-gray-900">#{{ str_pad(auth()->user()->id, 5, '0', STR_PAD_LEFT) }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-xs font-semibold text-gray-600">Status</p>
+                                    <p class="text-sm font-bold text-green-600">Active</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-xs font-semibold text-gray-600">Date Issued</p>
+                                    <p class="text-sm font-bold text-gray-900">{{ now()->format('M d, Y') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
