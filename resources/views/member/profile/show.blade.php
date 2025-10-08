@@ -280,7 +280,7 @@
                     </div>
                 </div>
 
-                <!-- Passbook Design -->
+                <!-- Passbook Design - Two Page Layout -->
                 <div class="bg-white border-2 border-gray-200 rounded-lg shadow-lg overflow-hidden">
                     <!-- Passbook Header -->
                     <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3 sm:p-4">
@@ -290,18 +290,64 @@
                         </div>
                     </div>
 
-                    <!-- Passbook Content -->
-                    <div class="p-3 sm:p-4">
-                        <!-- Member Information -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-                            <!-- Left Column - Member Details -->
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Account No:</span>
+                    <!-- Two Page Layout -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        <!-- Left Page - Vision, Mission, Core Values -->
+                        <div class="p-3 sm:p-4 border-r border-gray-200">
+                            <!-- Account Number -->
+                            <div class="mb-4">
+                                <label class="text-xs font-semibold text-gray-600">Account No.</label>
+                                <div class="border-b border-gray-300 h-6 flex items-center">
                                     <span class="text-xs font-medium text-gray-900">#{{ str_pad(auth()->user()->id, 6, '0', STR_PAD_LEFT) }}</span>
                                 </div>
+                            </div>
+
+                            <!-- Photo Placeholder -->
+                            <div class="mb-4">
+                                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 border-2 border-gray-300 rounded flex items-center justify-center mx-auto">
+                                    <span class="text-xs font-semibold text-gray-500">2x2</span>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <div class="border-b border-gray-300 h-4 w-24 mx-auto mb-1"></div>
+                                    <div class="border-b border-gray-300 h-4 w-24 mx-auto mb-1"></div>
+                                    <div class="border-b border-gray-300 h-4 w-24 mx-auto"></div>
+                                    <p class="text-xs text-gray-600 mt-1">Signature</p>
+                                </div>
+                            </div>
+
+                            <!-- Vision -->
+                            <div class="mb-3">
+                                <h4 class="text-xs font-bold text-gray-900 mb-1">VISION:</h4>
+                                <p class="text-xs text-gray-700 leading-relaxed">
+                                    We envision a future where savings literacy becomes shared responsibility among Filipino, fostering a financially empowered community that thrives through compassion, service and inclusivity.
+                                </p>
+                            </div>
+
+                            <!-- Mission -->
+                            <div class="mb-3">
+                                <h4 class="text-xs font-bold text-gray-900 mb-1">MISSION:</h4>
+                                <p class="text-xs text-gray-700 leading-relaxed">
+                                    We are dedicated to empowering individuals and communities through BAYANIHAN, enabling every member to achieve economic resilience and independence, imbued with good moral and spiritual values.
+                                </p>
+                            </div>
+
+                            <!-- Core Values -->
+                            <div>
+                                <h4 class="text-xs font-bold text-gray-900 mb-1">CORE VALUES:</h4>
+                                <div class="space-y-1">
+                                    <p class="text-xs text-gray-700"><span class="font-bold">S</span>ervice</p>
+                                    <p class="text-xs text-gray-700"><span class="font-bold">B</span>eneficence</p>
+                                    <p class="text-xs text-gray-700"><span class="font-bold">I</span>nclusivity</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Page - Member Info and Benefits -->
+                        <div class="p-3 sm:p-4">
+                            <!-- Member Information -->
+                            <div class="space-y-2 mb-4">
                                 <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Name:</span>
+                                    <span class="text-xs font-semibold text-gray-600">Name of Member:</span>
                                     <span class="text-xs font-medium text-gray-900">{{ auth()->user()->name }}</span>
                                 </div>
                                 <div class="flex justify-between items-center border-b border-gray-200 pb-1">
@@ -313,20 +359,46 @@
                                     <span class="text-xs font-medium text-gray-900">{{ auth()->user()->birth_date ? \Carbon\Carbon::parse(auth()->user()->birth_date)->format('M d, Y') : 'Not provided' }}</span>
                                 </div>
                                 <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Contact:</span>
+                                    <span class="text-xs font-semibold text-gray-600">Contact Number:</span>
                                     <span class="text-xs font-medium text-gray-900">{{ auth()->user()->phone_number ?? 'Not provided' }}</span>
                                 </div>
                                 <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Address:</span>
+                                    <span class="text-xs font-semibold text-gray-600">St./Sitio/Purok:</span>
                                     <span class="text-xs font-medium text-gray-900">{{ auth()->user()->address ?? 'Not provided' }}</span>
                                 </div>
                                 <div class="flex justify-between items-center border-b border-gray-200 pb-1">
                                     <span class="text-xs font-semibold text-gray-600">Barangay:</span>
                                     <span class="text-xs font-medium text-gray-900">{{ auth()->user()->barangay ?? 'Not provided' }}</span>
                                 </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">City/Municipality:</span>
+                                    <span class="text-xs font-medium text-gray-900">Sorsogon City</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Province:</span>
+                                    <span class="text-xs font-medium text-gray-900">Sorsogon</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Date Passbook Issued:</span>
+                                    <span class="text-xs font-medium text-gray-900">{{ now()->format('M d, Y') }}</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Name of Branch Leader:</span>
+                                    <span class="text-xs font-medium text-gray-900">Branch Leader</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                                    <span class="text-xs font-semibold text-gray-600">Signature:</span>
+                                    <span class="text-xs font-medium text-gray-900">________________</span>
+                                </div>
                             </div>
 
-                            <!-- Right Column - Benefits -->
+                            <!-- Passbook Number -->
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-semibold text-gray-600">PASSBOOK NO.</span>
+                                <span class="text-sm font-bold text-gray-900">#{{ str_pad(auth()->user()->id, 5, '0', STR_PAD_LEFT) }}</span>
+                            </div>
+
+                            <!-- Benefits Section -->
                             <div>
                                 <h4 class="text-sm font-bold text-gray-900 mb-2 text-center">MGA BENEPISYO</h4>
                                 <p class="text-xs text-gray-600 mb-3 text-center">Sa halagang P10 na savings kada linggo, maaari mong ma-enjoy ang mga sumusunod na BENEPISYO:</p>
@@ -339,8 +411,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-semibold text-gray-900">Burial Assistance</p>
-                                            <p class="text-xs text-gray-600">Mula P1,500 hanggang P50,000</p>
+                                            <p class="text-xs font-semibold text-gray-900">Burial Assistance:</p>
+                                            <p class="text-xs text-gray-600">Mula P1,500 hanggang P50,000 na tulong-pinansiyal para sa maayos na paglilibing.</p>
                                         </div>
                                     </div>
                                     
@@ -351,8 +423,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-semibold text-gray-900">Accidental Assistance</p>
-                                            <p class="text-xs text-gray-600">Mula P500 hanggang P10,000</p>
+                                            <p class="text-xs font-semibold text-gray-900">Accidental Assistance:</p>
+                                            <p class="text-xs text-gray-600">Mula P500 hanggang P10,000 na tulong-pinansiyal sa oras ng aksidente.</p>
                                         </div>
                                     </div>
                                     
@@ -363,8 +435,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-semibold text-gray-900">Hospitalization Benefit</p>
-                                            <p class="text-xs text-gray-600">Mula P500 hanggang P10,000</p>
+                                            <p class="text-xs font-semibold text-gray-900">Hospitalization Benefit:</p>
+                                            <p class="text-xs text-gray-600">Mula P500 hanggang P10,000 na panggastos sa ospital.</p>
                                         </div>
                                     </div>
                                     
@@ -375,8 +447,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-semibold text-gray-900">Maternity Benefit</p>
-                                            <p class="text-xs text-gray-600">Mula P500 hanggang P1,500</p>
+                                            <p class="text-xs font-semibold text-gray-900">Maternity Benefit:</p>
+                                            <p class="text-xs text-gray-600">Mula P500 hanggang P1,500 na tulong-pinansiyal para sa mga ina.</p>
                                         </div>
                                     </div>
                                     
@@ -387,8 +459,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-semibold text-gray-900">Animal Bite Benefits</p>
-                                            <p class="text-xs text-gray-600">P300 pesos na tulong-pinansiyal</p>
+                                            <p class="text-xs font-semibold text-gray-900">Animal Bite Benefits:</p>
+                                            <p class="text-xs text-gray-600">Nagkakahalaga ng P300 pesos na tulong-pinansiyal para sa mga kaso ng kagat ng hayop.</p>
                                         </div>
                                     </div>
                                     
@@ -399,8 +471,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-semibold text-gray-900">Birthday Cake o Cash Gift</p>
-                                            <p class="text-xs text-gray-600">P300 pesos na regalo tuwing kaarawan</p>
+                                            <p class="text-xs font-semibold text-gray-900">Birthday Cake o Cash Gift:</p>
+                                            <p class="text-xs text-gray-600">Nagkakahalaga ng P300 pesos na regalo tuwing kaarawan.</p>
                                         </div>
                                     </div>
                                     
@@ -411,8 +483,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-semibold text-gray-900">Outpatient Benefit</p>
-                                            <p class="text-xs text-gray-600">P200 pesos na benepisyo</p>
+                                            <p class="text-xs font-semibold text-gray-900">Outpatient Benefit:</p>
+                                            <p class="text-xs text-gray-600">Nagkakahalaga ng P200 pesos na benepisyo para sa mga outpatient o hindi na-ospital.</p>
                                         </div>
                                     </div>
                                     
@@ -420,31 +492,13 @@
                                         <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                                             <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                            </svg>
+                    </svg>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-semibold text-gray-900">Walang Age Limit</p>
-                                            <p class="text-xs text-gray-600">Lahat ay pwede maging miyembro</p>
+                                            <p class="text-xs font-semibold text-gray-900">Walang Age Limit:</p>
+                                            <p class="text-xs text-gray-600">Lahat ay pwede maging miyembro mapa bata man o matanda.</p>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Passbook Footer -->
-                        <div class="border-t border-gray-200 pt-3 mt-4">
-                            <div class="flex justify-between items-center">
-                                <div class="text-center">
-                                    <p class="text-xs font-semibold text-gray-600">PASSBOOK NO.</p>
-                                    <p class="text-sm font-bold text-gray-900">#{{ str_pad(auth()->user()->id, 5, '0', STR_PAD_LEFT) }}</p>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-xs font-semibold text-gray-600">Status</p>
-                                    <p class="text-sm font-bold text-green-600">Active</p>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-xs font-semibold text-gray-600">Date Issued</p>
-                                    <p class="text-sm font-bold text-gray-900">{{ now()->format('M d, Y') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -464,3 +518,4 @@
         </div>
     </div>
 @endsection
+
