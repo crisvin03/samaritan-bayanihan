@@ -1,61 +1,283 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏘️ Bayanihan Community Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive Laravel-based community management system designed for barangay (village) administration, featuring real-time notifications, benefit management, contribution tracking, and multi-role user management.
 
-## About Laravel
+## 🌟 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 👥 **Multi-Role System**
+- **Admin**: Full system control and oversight
+- **Treasurer**: Barangay-level financial management
+- **Member**: Community member with access to benefits and contributions
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 🔔 **Real-time Notifications**
+- Instant notifications for new announcements
+- Benefit status change alerts
+- Contribution validation notifications
+- Mark as read functionality
+- Toast notifications for immediate feedback
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 📢 **Announcement System**
+- Admin announcements for all users
+- Treasurer announcements for specific barangay members
+- Priority-based announcement system
+- Real-time broadcasting
 
-## Learning Laravel
+### 💰 **Benefit Management**
+- Multiple benefit types (Hospitalization, Burial, Animal Bite, etc.)
+- Application tracking with status updates
+- Document upload support
+- Approval workflow (Treasurer → Admin)
+- Real-time status notifications
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 💳 **Contribution Tracking**
+- Weekly savings tracking
+- Special contributions
+- Penalty management
+- Proof of payment uploads
+- Validation workflow
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 📊 **Reporting & Analytics**
+- Financial reports
+- Member statistics
+- Contribution summaries
+- Benefit distribution reports
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 📱 **Responsive Design**
+- Mobile-first approach
+- Cross-device compatibility
+- Touch-friendly interface
+- Adaptive layouts
 
-## Laravel Sponsors
+## 🛠️ Technology Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Backend**: Laravel 11.x
+- **Frontend**: Blade Templates + Tailwind CSS
+- **Database**: MySQL
+- **Real-time**: Pusher WebSockets
+- **Authentication**: Laravel Auth
+- **File Storage**: Laravel Storage
 
-### Premium Partners
+## 📋 Prerequisites
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- PHP 8.2 or higher
+- Composer
+- MySQL 8.0 or higher
+- Node.js & NPM (for asset compilation)
+- Web server (Apache/Nginx)
 
-## Contributing
+## 🚀 Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 1. Clone the Repository
+```bash
+git clone https://github.com/crisvin03/samaritan-bayanihan.git
+cd samaritan-bayanihan
+```
 
-## Code of Conduct
+### 2. Install Dependencies
+```bash
+composer install
+npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Environment Setup
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+### 4. Database Configuration
+Update your `.env` file with database credentials:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=bayanihan_db
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Run Migrations
+```bash
+php artisan migrate
+php artisan db:seed
+```
 
-## License
+### 6. Compile Assets
+```bash
+npm run build
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 7. Start the Server
+```bash
+php artisan serve
+```
+
+## 🔧 Configuration
+
+### Broadcasting Setup
+For real-time notifications, configure Pusher in your `.env`:
+```env
+BROADCAST_CONNECTION=pusher
+PUSHER_APP_ID=your_app_id
+PUSHER_APP_KEY=your_app_key
+PUSHER_APP_SECRET=your_app_secret
+PUSHER_APP_CLUSTER=your_cluster
+```
+
+### File Storage
+Configure file storage in `config/filesystems.php` for document uploads.
+
+## 👤 Default Users
+
+After running migrations and seeders, you'll have:
+
+- **Admin User**: Full system access
+- **Treasurer Users**: Barangay-specific access
+- **Member Users**: Community members
+
+## 📁 Project Structure
+
+```
+app/
+├── Events/                 # Real-time event broadcasting
+├── Http/Controllers/       # Application controllers
+│   ├── Admin/            # Admin-specific controllers
+│   ├── Member/           # Member-specific controllers
+│   └── Treasurer/        # Treasurer-specific controllers
+├── Models/               # Eloquent models
+├── Services/            # Business logic services
+└── Providers/           # Service providers
+
+resources/
+├── views/               # Blade templates
+│   ├── admin/          # Admin interface
+│   ├── member/         # Member interface
+│   └── treasurer/      # Treasurer interface
+└── css/                # Stylesheets
+
+database/
+├── migrations/          # Database migrations
+└── seeders/           # Database seeders
+```
+
+## 🔐 User Roles & Permissions
+
+### Admin
+- Manage all users and roles
+- Create system-wide announcements
+- Approve/reject benefit applications
+- Validate contributions
+- Access all reports and analytics
+
+### Treasurer
+- Manage barangay members
+- Create barangay-specific announcements
+- Forward benefit applications to admin
+- Record and validate contributions
+- Generate barangay reports
+
+### Member
+- View announcements
+- Apply for benefits
+- Submit contributions
+- Track application status
+- View personal dashboard
+
+## 🔔 Notification System
+
+The system includes a comprehensive notification system:
+
+- **Real-time Broadcasting**: Using Pusher WebSockets
+- **Event-driven**: Automatic notifications on status changes
+- **Persistent Storage**: All notifications stored in database
+- **Mark as Read**: User can mark notifications as read
+- **Toast Notifications**: Immediate visual feedback
+
+### Notification Types
+- New announcements
+- Benefit status changes
+- Contribution validation updates
+- System alerts
+
+## 📊 Database Schema
+
+### Core Tables
+- `users` - User accounts with role-based access
+- `announcements` - System and barangay announcements
+- `benefits` - Benefit applications and tracking
+- `contributions` - Member contributions and payments
+- `notifications` - Real-time notification storage
+
+### Relationships
+- Users have polymorphic notifications
+- Benefits belong to users
+- Contributions belong to users
+- Announcements have creators
+
+## 🧪 Testing
+
+### Test Notification System
+Visit `/test-notification` to test the real-time notification system.
+
+### Manual Testing
+1. Create an announcement as admin
+2. Check member notifications
+3. Apply for a benefit
+4. Track status changes
+5. Submit a contribution
+6. Verify validation workflow
+
+## 🚀 Deployment
+
+### Production Checklist
+- [ ] Update `.env` with production values
+- [ ] Configure web server (Apache/Nginx)
+- [ ] Set up SSL certificate
+- [ ] Configure Pusher for production
+- [ ] Set up database backups
+- [ ] Configure file storage
+- [ ] Run `php artisan config:cache`
+- [ ] Run `php artisan route:cache`
+
+### Environment Variables
+```env
+APP_ENV=production
+APP_DEBUG=false
+BROADCAST_CONNECTION=pusher
+PUSHER_APP_ID=your_production_app_id
+PUSHER_APP_KEY=your_production_app_key
+PUSHER_APP_SECRET=your_production_app_secret
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## 🆘 Support
+
+For support and questions:
+- Create an issue on GitHub
+- Contact the development team
+- Check the documentation
+
+## 🎯 Roadmap
+
+### Upcoming Features
+- [ ] Mobile app integration
+- [ ] Advanced reporting dashboard
+- [ ] Email notifications
+- [ ] SMS integration
+- [ ] Multi-language support
+- [ ] API endpoints for mobile apps
+
+---
+
+**Built with ❤️ for community management**
