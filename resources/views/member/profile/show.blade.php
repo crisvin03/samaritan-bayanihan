@@ -235,6 +235,21 @@
                     <p class="text-xs sm:text-sm font-medium text-gray-900 leading-tight">{{ auth()->user()->address ?? 'Not provided' }}</p>
                 </div>
 
+                <!-- Date of Membership -->
+                <div class="group bg-gradient-to-br from-white to-indigo-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-indigo-100 hover:border-indigo-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-md flex items-center justify-center shadow-lg">
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-indigo-600 uppercase tracking-wide">Date of Membership</h4>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm font-medium text-gray-900 leading-tight">{{ auth()->user()->created_at->format('M d, Y') }}</p>
+                </div>
+
                 <!-- Member Status -->
                 <div class="group bg-gradient-to-br from-white to-orange-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-orange-100 hover:border-orange-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float-delayed">
                     <div class="flex items-center space-x-2 mb-2">
