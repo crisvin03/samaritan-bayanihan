@@ -22,9 +22,34 @@ use App\Http\Controllers\Treasurer\ContributionController as TreasurerContributi
 use App\Http\Controllers\Treasurer\BenefitController as TreasurerBenefitController;
 use App\Http\Controllers\Treasurer\ReportController as TreasurerReportController;
 use App\Http\Controllers\Treasurer\AnnouncementController as TreasurerAnnouncementController;
+use App\Models\Announcement;
+use App\Models\User;
+use App\Services\NotificationService;
 
 Route::get('/', function () {
     return view('landing');
+});
+
+// Test notification route (remove in production)
+Route::get('/test-notification', function () {
+    $user = User::first();
+    if (!$user) {
+        return 'No users found';
+    }
+    
+    $announcement = Announcement::create([
+        'title' => 'Test Announcement',
+        'content' => 'This is a test announcement for notifications',
+        'priority' => 'medium',
+        'target_audience' => 'all',
+        'is_published' => true,
+        'created_by' => $user->id,
+    ]);
+    
+    $notificationService = new NotificationService();
+    $notificationService->createAnnouncementNotification($announcement);
+    
+    return 'Test notification created successfully!';
 });
 
 // Authentication Routes

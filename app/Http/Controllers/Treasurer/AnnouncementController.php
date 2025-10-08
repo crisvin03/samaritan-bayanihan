@@ -4,11 +4,18 @@ namespace App\Http\Controllers\Treasurer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AnnouncementController extends Controller
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     /**
      * Display a listing of announcements for the treasurer.
      */
@@ -90,6 +97,9 @@ class AnnouncementController extends Controller
             'created_by' => $treasurer->id,
             'published_at' => now(),
         ]);
+
+        // Trigger notification for treasurer's announcement
+        $this->notificationService->createAnnouncementNotification($announcement);
 
         return redirect()->route('treasurer.announcements.index')
             ->with('success', 'Announcement created successfully for your barangay members.');

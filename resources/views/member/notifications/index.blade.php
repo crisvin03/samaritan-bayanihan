@@ -152,8 +152,8 @@
                         <p class="text-gray-600 mt-1">Stay updated with system alerts and application status</p>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200">
-                            {{ $notifications->count() }} Notifications
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200" id="notification-count">
+                            {{ $notifications->total() }} Notifications
                         </span>
                         <form method="POST" action="{{ route('member.notifications.clear-all') }}" class="inline">
                             @csrf
@@ -169,20 +169,24 @@
             </div>
 
             <!-- Notifications List -->
-            <div class="divide-y divide-gray-200">
+            <div class="divide-y divide-gray-200" id="notifications-list">
                 @foreach($notifications as $notification)
-                    <div class="group p-8 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 {{ $notification['read'] ? 'opacity-75' : '' }} {{ $notification['priority'] === 'high' ? 'border-l-4 border-red-500 bg-red-50/30' : '' }}">
+                    <div class="group p-8 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 notification-item {{ $notification->read ? 'opacity-75' : '' }} {{ $notification->priority === 'high' ? 'border-l-4 border-red-500 bg-red-50/30' : '' }}" data-notification-id="{{ $notification->id }}">
                         <div class="flex items-start space-x-4">
                             <!-- Notification Icon -->
                             <div class="flex-shrink-0">
                                 <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300">
-                                    @if($notification['type'] === 'System Alert')
+                                    @if($notification->type === 'announcement')
                                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                                         </svg>
-                                    @elseif($notification['type'] === 'Application Status')
-                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    @elseif($notification->type === 'benefit_status')
+                                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    @elseif($notification->type === 'contribution_status')
+                                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                                         </svg>
                                     @else
                                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -197,12 +201,12 @@
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center space-x-3">
                                         <h3 class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                            {{ $notification['type'] }}
+                                            {{ $notification->title }}
                                         </h3>
-                                        @if(!$notification['read'])
+                                        @if(!$notification->read)
                                             <span class="inline-block w-3 h-3 bg-blue-600 rounded-full animate-pulse"></span>
                                         @endif
-                                        @if(isset($notification['priority']) && $notification['priority'] === 'high')
+                                        @if($notification->priority === 'high')
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 border border-red-200">
                                                 <svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
@@ -211,14 +215,21 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="text-sm text-gray-500">
-                                        {{ $notification['timestamp']->diffForHumans() }}
+                                    <div class="flex items-center space-x-2">
+                                        <div class="text-sm text-gray-500">
+                                            {{ $notification->created_at->diffForHumans() }}
+                                        </div>
+                                        @if(!$notification->read)
+                                            <button onclick="markAsRead({{ $notification->id }})" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                Mark as read
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
                                 
                                 <!-- Notification Message -->
                                 <p class="text-gray-700 leading-relaxed mb-4">
-                                    {{ $notification['message'] }}
+                                    {{ $notification->message }}
                                 </p>
                                 
                                 <!-- Timestamp -->
@@ -226,7 +237,7 @@
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    {{ $notification['timestamp']->format('M d, Y \a\t h:i A') }}
+                                    {{ $notification->created_at->format('M d, Y \a\t h:i A') }}
                                 </div>
                             </div>
                         </div>
@@ -294,7 +305,169 @@
         </div>
     @endif
 
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
+        // Initialize Pusher for real-time notifications
+        const pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+            encrypted: true
+        });
+
+        // Subscribe to notifications channel
+        const channel = pusher.subscribe('notifications');
+        
+        // Listen for new notifications
+        channel.bind('App\\Events\\NewAnnouncementNotification', function(data) {
+            addNewNotification(data);
+        });
+
+        // Listen for benefit status changes
+        const userChannel = pusher.subscribe('user.{{ auth()->id() }}');
+        userChannel.bind('App\\Events\\BenefitStatusChanged', function(data) {
+            addNewNotification(data);
+        });
+
+        userChannel.bind('App\\Events\\ContributionStatusChanged', function(data) {
+            addNewNotification(data);
+        });
+
+        // Function to add new notification to the list
+        function addNewNotification(data) {
+            const notificationsList = document.getElementById('notifications-list');
+            const notificationCount = document.getElementById('notification-count');
+            
+            // Create new notification element
+            const notificationElement = createNotificationElement(data);
+            
+            // Add to top of list
+            notificationsList.insertBefore(notificationElement, notificationsList.firstChild);
+            
+            // Update count
+            const currentCount = parseInt(notificationCount.textContent.split(' ')[0]);
+            notificationCount.textContent = `${currentCount + 1} Notifications`;
+            
+            // Show notification toast
+            showNotificationToast(data);
+        }
+
+        // Function to create notification element
+        function createNotificationElement(data) {
+            const div = document.createElement('div');
+            div.className = 'group p-8 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 notification-item border-l-4 border-blue-500 bg-blue-50/30';
+            div.setAttribute('data-notification-id', data.id);
+            
+            const iconClass = getIconClass(data.type);
+            const priorityClass = data.priority === 'high' ? 'border-red-500 bg-red-50/30' : '';
+            
+            div.innerHTML = `
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300">
+                            ${iconClass}
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <h3 class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                    ${data.title}
+                                </h3>
+                                <span class="inline-block w-3 h-3 bg-blue-600 rounded-full animate-pulse"></span>
+                                ${data.priority === 'high' ? '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 border border-red-200"><svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>Important</span>' : ''}
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="text-sm text-gray-500">Just now</div>
+                                <button onclick="markAsRead(${data.id})" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Mark as read</button>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mb-4">${data.message}</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            ${new Date(data.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // Function to get icon class based on notification type
+        function getIconClass(type) {
+            switch(type) {
+                case 'announcement':
+                    return '<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>';
+                case 'benefit_status':
+                    return '<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                case 'contribution_status':
+                    return '<svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path></svg>';
+                default:
+                    return '<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.586 2.586a2 2 0 002.828 0L12.828 7H4.828zM4.828 17h8l-2.586-2.586a2 2 0 00-2.828 0L4.828 17z"></path></svg>';
+            }
+        }
+
+        // Function to show notification toast
+        function showNotificationToast(data) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-50 max-w-sm animate-slide-in-right';
+            toast.innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            ${getIconClass(data.type)}
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-semibold text-gray-900">${data.title}</h4>
+                        <p class="text-sm text-gray-600 mt-1">${data.message}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+
+        // Function to mark notification as read
+        function markAsRead(notificationId) {
+            fetch(`/member/notifications/${notificationId}/mark-as-read`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const notificationElement = document.querySelector(`[data-notification-id="${notificationId}"]`);
+                    if (notificationElement) {
+                        notificationElement.classList.add('opacity-75');
+                        const markAsReadButton = notificationElement.querySelector('button[onclick*="markAsRead"]');
+                        if (markAsReadButton) {
+                            markAsReadButton.remove();
+                        }
+                        const pulseDot = notificationElement.querySelector('.animate-pulse');
+                        if (pulseDot) {
+                            pulseDot.remove();
+                        }
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
         // Auto-hide success message after 3 seconds
         document.addEventListener('DOMContentLoaded', function() {
             const successMessage = document.getElementById('success-message');

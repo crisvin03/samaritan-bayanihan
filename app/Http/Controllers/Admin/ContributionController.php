@@ -5,10 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Contribution;
 use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 
 class ContributionController extends Controller
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     public function index(Request $request)
     {
         $query = Contribution::with(['user', 'recordedBy']);
@@ -125,7 +132,13 @@ class ContributionController extends Controller
                 ->store('contributions', 'public');
         }
 
+        $oldStatus = $contribution->status;
         $contribution->update($data);
+
+        // Trigger notification if status changed
+        if ($oldStatus !== $request->status) {
+            $this->notificationService->createContributionStatusNotification($contribution, $oldStatus, $request->status);
+        }
 
         return redirect()->route('admin.contributions.show', $contribution)
             ->with('success', 'Contribution updated successfully.');
@@ -146,10 +159,14 @@ class ContributionController extends Controller
             'validation_notes' => 'nullable|string',
         ]);
 
+        $oldStatus = $contribution->status;
         $contribution->update([
             'status' => $request->status,
             'validation_notes' => $request->validation_notes,
         ]);
+
+        // Trigger notification for status change
+        $this->notificationService->createContributionStatusNotification($contribution, $oldStatus, $request->status);
 
         $status = $request->status === 'validated' ? 'validated' : 'rejected';
         

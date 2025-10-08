@@ -5,11 +5,18 @@ namespace App\Http\Controllers\Treasurer;
 use App\Http\Controllers\Controller;
 use App\Models\Benefit;
 use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class BenefitController extends Controller
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     /**
      * Display a listing of benefit requests from the treasurer's barangay.
      */
@@ -91,6 +98,7 @@ class BenefitController extends Controller
             'treasurer_notes' => 'nullable|string|max:1000',
         ]);
 
+        $oldStatus = $benefit->status;
         // Update benefit with treasurer notes and forward status
         $benefit->update([
             'treasurer_notes' => $request->treasurer_notes,
@@ -98,6 +106,9 @@ class BenefitController extends Controller
             'forwarded_at' => now(),
             'forwarded_by' => $treasurer->id,
         ]);
+
+        // Trigger notification for status change
+        $this->notificationService->createBenefitStatusNotification($benefit, $oldStatus, 'forwarded');
 
         return redirect()->route('treasurer.benefits.index')
             ->with('success', 'Benefit request has been forwarded to admin for approval.');
@@ -119,6 +130,7 @@ class BenefitController extends Controller
             'rejection_reason' => 'required|string|max:1000',
         ]);
 
+        $oldStatus = $benefit->status;
         // Update benefit with rejection
         $benefit->update([
             'status' => 'rejected',
@@ -126,6 +138,9 @@ class BenefitController extends Controller
             'rejected_at' => now(),
             'rejected_by' => $treasurer->id,
         ]);
+
+        // Trigger notification for status change
+        $this->notificationService->createBenefitStatusNotification($benefit, $oldStatus, 'rejected');
 
         return redirect()->route('treasurer.benefits.index')
             ->with('success', 'Benefit request has been rejected.');

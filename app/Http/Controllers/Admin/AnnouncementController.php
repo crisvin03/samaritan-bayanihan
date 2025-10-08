@@ -4,11 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AnnouncementController extends Controller
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -40,7 +47,7 @@ class AnnouncementController extends Controller
             'is_published' => 'boolean',
         ]);
 
-        Announcement::create([
+        $announcement = Announcement::create([
             'title' => $request->title,
             'content' => $request->content,
             'priority' => $request->priority,
@@ -48,6 +55,11 @@ class AnnouncementController extends Controller
             'is_published' => $request->has('is_published'),
             'created_by' => Auth::id(),
         ]);
+
+        // Trigger notification if announcement is published
+        if ($request->has('is_published')) {
+            $this->notificationService->createAnnouncementNotification($announcement);
+        }
 
         return redirect()->route('admin.announcements.index')
             ->with('success', 'Announcement created successfully.');
@@ -113,6 +125,9 @@ class AnnouncementController extends Controller
     public function publish(Announcement $announcement)
     {
         $announcement->update(['is_published' => true]);
+
+        // Trigger notification when announcement is published
+        $this->notificationService->createAnnouncementNotification($announcement);
 
         return redirect()->back()
             ->with('success', 'Announcement published successfully.');

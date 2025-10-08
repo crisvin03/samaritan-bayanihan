@@ -5,10 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Benefit;
 use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 
 class BenefitController extends Controller
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     public function index(Request $request)
     {
         $query = Benefit::with(['user', 'reviewedBy']);
@@ -82,7 +89,13 @@ class BenefitController extends Controller
             $data['disbursed_at'] = now();
         }
 
+        $oldStatus = $benefit->status;
         $benefit->update($data);
+
+        // Trigger notification if status changed
+        if ($oldStatus !== $request->status) {
+            $this->notificationService->createBenefitStatusNotification($benefit, $oldStatus, $request->status);
+        }
 
         return redirect()->route('admin.benefits.show', $benefit)
             ->with('success', 'Benefit application updated successfully.');
@@ -103,6 +116,7 @@ class BenefitController extends Controller
             'admin_notes' => 'nullable|string',
         ]);
 
+        $oldStatus = $benefit->status;
         $benefit->update([
             'status' => 'approved',
             'approved_amount' => $request->approved_amount,
@@ -110,6 +124,9 @@ class BenefitController extends Controller
             'reviewed_by' => auth()->id(),
             'reviewed_at' => now(),
         ]);
+
+        // Trigger notification for status change
+        $this->notificationService->createBenefitStatusNotification($benefit, $oldStatus, 'approved');
 
         return redirect()->back()
             ->with('success', 'Benefit application approved successfully.');
@@ -121,12 +138,16 @@ class BenefitController extends Controller
             'admin_notes' => 'required|string',
         ]);
 
+        $oldStatus = $benefit->status;
         $benefit->update([
             'status' => 'rejected',
             'admin_notes' => $request->admin_notes,
             'reviewed_by' => auth()->id(),
             'reviewed_at' => now(),
         ]);
+
+        // Trigger notification for status change
+        $this->notificationService->createBenefitStatusNotification($benefit, $oldStatus, 'rejected');
 
         return redirect()->back()
             ->with('success', 'Benefit application rejected successfully.');
@@ -139,10 +160,14 @@ class BenefitController extends Controller
                 ->with('error', 'Only approved benefits can be disbursed.');
         }
 
+        $oldStatus = $benefit->status;
         $benefit->update([
             'status' => 'disbursed',
             'disbursed_at' => now(),
         ]);
+
+        // Trigger notification for status change
+        $this->notificationService->createBenefitStatusNotification($benefit, $oldStatus, 'disbursed');
 
         return redirect()->back()
             ->with('success', 'Benefit disbursed successfully.');
