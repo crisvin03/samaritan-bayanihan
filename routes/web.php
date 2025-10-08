@@ -16,6 +16,7 @@ use App\Http\Controllers\Member\BenefitController as MemberBenefitController;
 use App\Http\Controllers\Member\ContributionController as MemberContributionController;
 use App\Http\Controllers\Member\NotificationController as MemberNotificationController;
 use App\Http\Controllers\Member\AnnouncementController as MemberAnnouncementController;
+use App\Http\Controllers\Member\PassbookController as MemberPassbookController;
 use App\Http\Controllers\Treasurer\DashboardController as TreasurerDashboardController;
 use App\Http\Controllers\Treasurer\MemberController as TreasurerMemberController;
 use App\Http\Controllers\Treasurer\ContributionController as TreasurerContributionController;
@@ -142,6 +143,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/notifications/clear-all', [MemberNotificationController::class, 'clearAll'])->name('notifications.clear-all');
         Route::get('/announcements', [MemberAnnouncementController::class, 'index'])->name('announcements.index');
         Route::get('/announcements/{announcement}', [MemberAnnouncementController::class, 'show'])->name('announcements.show');
+        Route::get('/passbook', [MemberPassbookController::class, 'index'])->name('passbook');
     });
 
     // Barangay Treasurer Routes

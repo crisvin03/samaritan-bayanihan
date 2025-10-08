@@ -266,6 +266,28 @@
                 </div>
             </div>
 
+            <!-- Document Upload Section -->
+            <div class="bg-gradient-to-br from-white to-gray-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-gray-100 hover:border-gray-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
+                <div class="flex items-center space-x-2 mb-3">
+                    <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-gray-500 to-gray-600 rounded-md flex items-center justify-center shadow-lg">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">ID/Verification Documents</h4>
+                        <p class="text-xs text-gray-600 leading-tight">Upload your identification documents for verification</p>
+                    </div>
+                </div>
+                <div class="border-2 border-dashed border-gray-300 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-300">
+                    <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <p class="text-gray-600 text-xs sm:text-sm mb-1 leading-tight">Click to upload or drag and drop</p>
+                    <p class="text-xs text-gray-400">PNG, JPG, PDF up to 10MB</p>
+                </div>
+            </div>
+
             <!-- Online Passbook Section -->
             <div class="bg-gradient-to-br from-white to-blue-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
                 <div class="flex items-center space-x-2 mb-4">
@@ -276,233 +298,26 @@
                     </div>
                     <div>
                         <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">Online Passbook</h4>
-                        <p class="text-xs text-gray-600 leading-tight">Your digital savings passbook with benefits</p>
+                        <p class="text-xs text-gray-600 leading-tight">View your digital savings passbook</p>
                     </div>
                 </div>
-
-                <!-- Passbook Design - Two Page Layout -->
-                <div class="bg-white border-2 border-gray-200 rounded-lg shadow-lg overflow-hidden">
-                    <!-- Passbook Header -->
-                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3 sm:p-4">
-                        <div class="text-center">
-                            <h3 class="text-sm sm:text-base lg:text-lg font-bold">SAMARITAN BAYANIHAN</h3>
-                            <p class="text-xs sm:text-sm">Savings Program with FREE BENEFITS</p>
-                        </div>
+                
+                <div class="bg-white border-2 border-gray-200 rounded-lg shadow-lg p-4 text-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
                     </div>
-
-                    <!-- Two Page Layout -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2">
-                        <!-- Left Page - Vision, Mission, Core Values -->
-                        <div class="p-3 sm:p-4 border-r border-gray-200">
-                            <!-- Account Number -->
-                            <div class="mb-4">
-                                <label class="text-xs font-semibold text-gray-600">Account No.</label>
-                                <div class="border-b border-gray-300 h-6 flex items-center">
-                                    <span class="text-xs font-medium text-gray-900">#{{ str_pad(auth()->user()->id, 6, '0', STR_PAD_LEFT) }}</span>
-                                </div>
-                            </div>
-
-                            <!-- Photo Placeholder -->
-                            <div class="mb-4">
-                                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 border-2 border-gray-300 rounded flex items-center justify-center mx-auto">
-                                    <span class="text-xs font-semibold text-gray-500">2x2</span>
-                                </div>
-                                <div class="text-center mt-2">
-                                    <div class="border-b border-gray-300 h-4 w-24 mx-auto mb-1"></div>
-                                    <div class="border-b border-gray-300 h-4 w-24 mx-auto mb-1"></div>
-                                    <div class="border-b border-gray-300 h-4 w-24 mx-auto"></div>
-                                    <p class="text-xs text-gray-600 mt-1">Signature</p>
-                                </div>
-                            </div>
-
-                            <!-- Vision -->
-                            <div class="mb-3">
-                                <h4 class="text-xs font-bold text-gray-900 mb-1">VISION:</h4>
-                                <p class="text-xs text-gray-700 leading-relaxed">
-                                    We envision a future where savings literacy becomes shared responsibility among Filipino, fostering a financially empowered community that thrives through compassion, service and inclusivity.
-                                </p>
-                            </div>
-
-                            <!-- Mission -->
-                            <div class="mb-3">
-                                <h4 class="text-xs font-bold text-gray-900 mb-1">MISSION:</h4>
-                                <p class="text-xs text-gray-700 leading-relaxed">
-                                    We are dedicated to empowering individuals and communities through BAYANIHAN, enabling every member to achieve economic resilience and independence, imbued with good moral and spiritual values.
-                                </p>
-                            </div>
-
-                            <!-- Core Values -->
-                            <div>
-                                <h4 class="text-xs font-bold text-gray-900 mb-1">CORE VALUES:</h4>
-                                <div class="space-y-1">
-                                    <p class="text-xs text-gray-700"><span class="font-bold">S</span>ervice</p>
-                                    <p class="text-xs text-gray-700"><span class="font-bold">B</span>eneficence</p>
-                                    <p class="text-xs text-gray-700"><span class="font-bold">I</span>nclusivity</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Page - Member Info and Benefits -->
-                        <div class="p-3 sm:p-4">
-                            <!-- Member Information -->
-                            <div class="space-y-2 mb-4">
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Name of Member:</span>
-                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->name }}</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Date of Membership:</span>
-                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->created_at->format('M d, Y') }}</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Date of Birth:</span>
-                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->birth_date ? \Carbon\Carbon::parse(auth()->user()->birth_date)->format('M d, Y') : 'Not provided' }}</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Contact Number:</span>
-                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->phone_number ?? 'Not provided' }}</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">St./Sitio/Purok:</span>
-                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->address ?? 'Not provided' }}</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Barangay:</span>
-                                    <span class="text-xs font-medium text-gray-900">{{ auth()->user()->barangay ?? 'Not provided' }}</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">City/Municipality:</span>
-                                    <span class="text-xs font-medium text-gray-900">Sorsogon City</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Province:</span>
-                                    <span class="text-xs font-medium text-gray-900">Sorsogon</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Date Passbook Issued:</span>
-                                    <span class="text-xs font-medium text-gray-900">{{ now()->format('M d, Y') }}</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Name of Branch Leader:</span>
-                                    <span class="text-xs font-medium text-gray-900">Branch Leader</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                                    <span class="text-xs font-semibold text-gray-600">Signature:</span>
-                                    <span class="text-xs font-medium text-gray-900">________________</span>
-                                </div>
-                            </div>
-
-                            <!-- Passbook Number -->
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-xs font-semibold text-gray-600">PASSBOOK NO.</span>
-                                <span class="text-sm font-bold text-gray-900">#{{ str_pad(auth()->user()->id, 5, '0', STR_PAD_LEFT) }}</span>
-                            </div>
-
-                            <!-- Benefits Section -->
-                            <div>
-                                <h4 class="text-sm font-bold text-gray-900 mb-2 text-center">MGA BENEPISYO</h4>
-                                <p class="text-xs text-gray-600 mb-3 text-center">Sa halagang P10 na savings kada linggo, maaari mong ma-enjoy ang mga sumusunod na BENEPISYO:</p>
-                                
-                                <div class="grid grid-cols-1 gap-2">
-                                    <div class="flex items-start space-x-2">
-                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-semibold text-gray-900">Burial Assistance:</p>
-                                            <p class="text-xs text-gray-600">Mula P1,500 hanggang P50,000 na tulong-pinansiyal para sa maayos na paglilibing.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-start space-x-2">
-                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-semibold text-gray-900">Accidental Assistance:</p>
-                                            <p class="text-xs text-gray-600">Mula P500 hanggang P10,000 na tulong-pinansiyal sa oras ng aksidente.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-start space-x-2">
-                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-semibold text-gray-900">Hospitalization Benefit:</p>
-                                            <p class="text-xs text-gray-600">Mula P500 hanggang P10,000 na panggastos sa ospital.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-start space-x-2">
-                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-semibold text-gray-900">Maternity Benefit:</p>
-                                            <p class="text-xs text-gray-600">Mula P500 hanggang P1,500 na tulong-pinansiyal para sa mga ina.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-start space-x-2">
-                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-semibold text-gray-900">Animal Bite Benefits:</p>
-                                            <p class="text-xs text-gray-600">Nagkakahalaga ng P300 pesos na tulong-pinansiyal para sa mga kaso ng kagat ng hayop.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-start space-x-2">
-                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-semibold text-gray-900">Birthday Cake o Cash Gift:</p>
-                                            <p class="text-xs text-gray-600">Nagkakahalaga ng P300 pesos na regalo tuwing kaarawan.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-start space-x-2">
-                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-semibold text-gray-900">Outpatient Benefit:</p>
-                                            <p class="text-xs text-gray-600">Nagkakahalaga ng P200 pesos na benepisyo para sa mga outpatient o hindi na-ospital.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-start space-x-2">
-                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                    </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-semibold text-gray-900">Walang Age Limit:</p>
-                                            <p class="text-xs text-gray-600">Lahat ay pwede maging miyembro mapa bata man o matanda.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <h5 class="text-sm font-bold text-gray-900 mb-2">SAMARITAN BAYANIHAN</h5>
+                    <p class="text-xs text-gray-600 mb-4">Savings Program with FREE BENEFITS</p>
+                    <p class="text-xs text-gray-500 mb-4">Passbook No. #{{ str_pad(auth()->user()->id, 5, '0', STR_PAD_LEFT) }}</p>
+                    <a href="{{ route('member.passbook') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-xs font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        View Online Passbook
+                    </a>
                 </div>
             </div>
 
