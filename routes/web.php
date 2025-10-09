@@ -69,6 +69,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/verify-email', [App\Http\Controllers\VerificationController::class, 'showEmailVerification'])->name('verify-email');
 Route::get('/verify-email/verify', [App\Http\Controllers\VerificationController::class, 'verifyEmail'])->name('verify-email.verify');
 Route::post('/resend-verification', [App\Http\Controllers\VerificationController::class, 'resendVerification'])->name('resend-verification');
+Route::post('/send-verification-code', [App\Http\Controllers\VerificationController::class, 'sendVerificationCode'])->name('send-verification-code');
+Route::post('/verify-email-code', [App\Http\Controllers\VerificationController::class, 'verifyEmailCode'])->name('verify-email-code');
 
 // Phone Verification Routes
 Route::get('/verify-phone', [App\Http\Controllers\VerificationController::class, 'showPhoneVerification'])->name('verify-phone');
@@ -77,7 +79,7 @@ Route::post('/verify-phone', [App\Http\Controllers\VerificationController::class
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Role-based Dashboard Routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'email.verified'])->group(function () {
     // Redirect to appropriate dashboard based on role
     Route::get('/dashboard', function () {
         $user = auth()->user();
@@ -92,7 +94,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
     // Admin Routes
-    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['role:admin', 'email.verified'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::resource('members', AdminMemberController::class);
         Route::resource('treasurers', AdminTreasurerController::class);
@@ -146,7 +148,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Member Routes
-    Route::middleware(['role:member'])->prefix('member')->name('member.')->group(function () {
+    Route::middleware(['role:member', 'email.verified'])->prefix('member')->name('member.')->group(function () {
         Route::get('/dashboard', [MemberDashboardController::class, 'index'])->name('dashboard');
         Route::get('/profile', [MemberProfileController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [MemberProfileController::class, 'edit'])->name('profile.edit');
@@ -165,7 +167,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Barangay Treasurer Routes
-    Route::middleware(['role:barangay_treasurer'])->prefix('treasurer')->name('treasurer.')->group(function () {
+    Route::middleware(['role:barangay_treasurer', 'email.verified'])->prefix('treasurer')->name('treasurer.')->group(function () {
         Route::get('/dashboard', [TreasurerDashboardController::class, 'index'])->name('dashboard');
         Route::resource('members', TreasurerMemberController::class);
         Route::resource('contributions', TreasurerContributionController::class);

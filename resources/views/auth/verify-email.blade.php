@@ -18,38 +18,137 @@
             font-family: 'Inter', sans-serif;
         }
         .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #524890;
             min-height: 100vh;
+            position: relative;
         }
         .glass-effect {
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(30px);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 32px 64px -12px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        .glass-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+        .input-focus {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            box-shadow: 
+                0 10px 15px -3px rgba(59, 130, 246, 0.3),
+                0 4px 6px -2px rgba(59, 130, 246, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 20px 25px -5px rgba(59, 130, 246, 0.4),
+                0 10px 10px -5px rgba(59, 130, 246, 0.2);
+        }
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .logo-glow {
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Enhanced text readability */
+        .text-white {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .text-white\/90 {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .text-white\/80 {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Enhanced input field readability */
+        input[type="email"] {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7) !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Improve label readability */
+        label {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+            font-weight: 600;
+        }
+        
+        /* Enhanced button text readability */
+        .btn-primary {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+            letter-spacing: 0.025em;
+        }
+        
+        .btn-primary:hover {
+            color: #ffffff !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
         }
     </style>
 </head>
 <body class="min-h-screen gradient-bg flex items-center justify-center p-6">
     <div class="w-full max-w-lg">
         <!-- Logo -->
-        <div class="text-center mb-10">
-            <div class="flex items-center justify-center space-x-3 mb-6">
-                <div class="w-16 h-16 rounded-xl overflow-hidden shadow-xl border-2 border-white/20 bg-white p-1">
-                    <img src="{{ asset('images/logo.png') }}" alt="Bayanihan Logo" class="w-full h-full object-contain">
+        <div class="text-center mb-6">
+            <div class="flex items-center justify-center space-x-3 mb-4 floating-animation">
+                <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/30 bg-white p-1 logo-glow">
+                    <img src="{{ asset('images/logo.png') }}" alt="Samaritan Bayanihan Logo" class="w-full h-full object-contain">
                 </div>
                 <div class="text-left">
-                    <span class="text-white font-bold text-2xl block">Samaritan</span>
-                    <span class="text-yellow-300 font-semibold text-sm">Bayanihan Inc.</span>
+                    <span class="text-gradient font-bold text-2xl block">Samaritan</span>
+                    <span class="text-white/80 text-xs font-medium">Bayanihan Inc.</span>
                 </div>
             </div>
-            <h1 class="text-4xl font-bold text-white mb-3">Verify Your Email</h1>
-            <p class="text-purple-100 text-lg">Check your inbox for verification instructions</p>
+            <h1 class="text-3xl font-bold text-gradient mb-2">Verify Your Email</h1>
+            <p class="text-white/90 text-base font-medium">Check your inbox for verification instructions</p>
         </div>
 
         <!-- Verification Form -->
-        <div class="glass-effect rounded-3xl p-10 shadow-2xl">
+        <div class="glass-effect rounded-2xl p-6 shadow-2xl">
             @if (session('success'))
-                <div class="bg-green-500/20 border border-green-500/50 text-green-100 px-6 py-4 rounded-xl backdrop-blur-sm mb-6">
+                <div class="bg-green-500/20 border border-green-500/50 text-green-100 px-6 py-4 rounded-xl backdrop-blur-sm mb-6" id="successMessage">
                     <div class="flex items-center space-x-2">
                         <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -70,30 +169,31 @@
                 </div>
             @endif
 
-            <div class="text-center mb-8">
-                <div class="w-20 h-20 bg-yellow-400/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-10 h-10 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-yellow-400/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                     </svg>
                 </div>
-                <h2 class="text-2xl font-bold text-white mb-2">Check Your Email</h2>
-                <p class="text-purple-100 leading-relaxed">
-                    We've sent a verification link to your email address. Please check your inbox and click the verification link to activate your account.
+                <h2 class="text-xl font-bold text-white mb-2">Check Your Email</h2>
+                <p class="text-purple-100 text-sm">
+                    We've sent a verification link to your email address. Click the link in your email to verify your account.
                 </p>
             </div>
 
-            <!-- Resend Verification Form -->
-            <form method="POST" action="{{ route('resend-verification') }}" class="space-y-6">
+            <!-- Email Verification Form -->
+            <form method="POST" action="{{ route('resend-verification') }}" class="space-y-4">
                 @csrf
                 
                 <div class="relative">
-                    <label for="email" class="block text-white font-semibold mb-3 text-sm uppercase tracking-wide">Email Address</label>
+                    <label for="email" class="block text-white font-semibold mb-2 text-xs uppercase tracking-wide">Email Address</label>
                     <div class="relative">
-                        <input type="email" id="email" name="email" value="{{ old('email') }}" required 
-                               class="w-full px-5 py-4 rounded-xl bg-white/10 border border-white/30 text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent backdrop-blur-sm"
-                               placeholder="Enter your email address">
+                        <input type="email" id="email" name="email" value="{{ session('email') ?: old('email') }}" required 
+                               class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent input-focus backdrop-blur-sm @if(session('email')) opacity-75 cursor-not-allowed @endif"
+                               placeholder="Enter your email address"
+                               @if(session('email')) readonly @endif>
                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                            <svg class="w-5 h-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
                         </div>
@@ -101,25 +201,51 @@
                 </div>
 
                 <button type="submit" 
-                        class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-purple-900 font-bold py-4 rounded-xl transition-all duration-300 shadow-lg hover:scale-105 hover:shadow-xl">
-                    Resend Verification Email
+                        class="w-full btn-primary text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-lg hover:scale-105 hover:shadow-xl">
+                    Resend Verification Link
                 </button>
             </form>
 
-            <div class="mt-8 text-center">
-                <p class="text-purple-100 text-lg">
+
+            <div class="mt-4 text-center">
+                <p class="text-white/90 text-sm" style="text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);">
                     Didn't receive the email? 
-                    <a href="{{ route('register') }}" class="text-yellow-300 hover:underline font-semibold">Try registering again</a>
+                    <a href="{{ route('register') }}" class="text-blue-300 hover:text-blue-200 transition-colors font-semibold" style="text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">Try registering again</a>
                 </p>
             </div>
         </div>
 
-        <!-- Back to Home -->
-        <div class="text-center mt-8">
-            <a href="/" class="text-white hover:text-yellow-300 transition-colors font-medium">
-                ← Back to Home
-            </a>
-        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-dismiss success message after 4 seconds
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                setTimeout(function() {
+                    successMessage.style.transition = 'opacity 0.5s ease-out';
+                    successMessage.style.opacity = '0';
+                    setTimeout(function() {
+                        successMessage.remove();
+                    }, 500);
+                }, 4000);
+            }
+            
+            // Simple form validation
+            const emailInput = document.getElementById('email');
+            const submitBtn = document.querySelector('button[type="submit"]');
+            
+            // Auto-focus on email input
+            emailInput.focus();
+            
+            // Form submission with loading state
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function() {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+                submitBtn.classList.add('opacity-50');
+            });
+        });
+    </script>
 </body>
 </html>

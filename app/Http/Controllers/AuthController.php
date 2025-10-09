@@ -193,11 +193,12 @@ class AuthController extends Controller
         ]);
 
 
-        // Send email verification
-        $user->notify(new \App\Notifications\EmailVerificationNotification());
+        // Send email verification link
+        $user->notify(new \App\Notifications\EmailVerificationNotification($emailToken));
 
         return redirect()->route('verify-email')
-            ->with('success', 'Registration successful! Please check your email to verify your account.');
+            ->with('success', 'Registration successful! A verification link has been sent to your email.')
+            ->with('email', $request->email);
     }
 
     public function logout(Request $request)

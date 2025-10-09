@@ -2,21 +2,18 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
 
-class EmailVerificationNotification extends Notification implements ShouldQueue
+class EmailVerificationNotification extends Notification
 {
-    use Queueable;
 
     public $verificationToken;
 
-    public function __construct()
+    public function __construct($token = null)
     {
-        $this->verificationToken = Str::random(64);
+        $this->verificationToken = $token ?? Str::random(64);
     }
 
     public function via($notifiable)
@@ -26,7 +23,7 @@ class EmailVerificationNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable)
     {
-        $verificationUrl = url('/verify-email?token=' . $this->verificationToken . '&email=' . urlencode($notifiable->email));
+        $verificationUrl = url('/verify-email/verify?token=' . $this->verificationToken . '&email=' . urlencode($notifiable->email));
         
         return (new MailMessage)
             ->subject('Verify Your Email - Samaritan Bayanihan Inc.')

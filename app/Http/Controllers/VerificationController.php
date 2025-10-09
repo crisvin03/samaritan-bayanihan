@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\EmailVerificationCode;
 use App\Notifications\EmailVerificationNotification;
+use App\Notifications\EmailVerificationCodeNotification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -54,14 +56,16 @@ class VerificationController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user->email_verified_at) {
-            return back()->with('info', 'Email is already verified.');
+            return back()->with('info', 'Email is already verified.')
+                         ->with('email', $request->email);
         }
 
         // Check rate limiting (max 3 attempts per hour)
         if ($user->verification_attempts >= 3 && 
             $user->last_verification_attempt && 
             $user->last_verification_attempt->diffInHours(now()) < 1) {
-            return back()->with('error', 'Too many verification attempts. Please try again later.');
+            return back()->with('error', 'Too many verification attempts. Please try again later.')
+                         ->with('email', $request->email);
         }
 
         // Generate new token
@@ -74,9 +78,10 @@ class VerificationController extends Controller
         ]);
 
         // Send verification email
-        $user->notify(new EmailVerificationNotification());
+        $user->notify(new EmailVerificationNotification($token));
 
-        return back()->with('success', 'Verification email sent successfully!');
+        return back()->with('success', 'Verification email sent successfully!')
+                     ->with('email', $request->email);
     }
 
     public function showPhoneVerification()
@@ -147,5 +152,87 @@ class VerificationController extends Controller
 
         return redirect()->route('member.dashboard')
             ->with('success', 'Phone number verified successfully!');
+    }
+
+    public function sendVerificationCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user->email_verified_at) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Email is already verified.']);
+            }
+            return back()->with('info', 'Email is already verified.');
+        }
+
+        // Check rate limiting (max 5 attempts per hour)
+        if ($user->verification_attempts >= 5 && 
+            $user->last_verification_attempt && 
+            $user->last_verification_attempt->diffInHours(now()) < 1) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Too many verification attempts. Please try again later.']);
+            }
+            return back()->with('error', 'Too many verification attempts. Please try again later.');
+        }
+
+        // Create new verification code
+        $verificationCode = EmailVerificationCode::createForUser($user->id, 15);
+
+        // Send verification code email
+        $user->notify(new EmailVerificationCodeNotification(
+            $verificationCode->code, 
+            $verificationCode->expires_at
+        ));
+
+        // Update user verification attempts
+        $user->update([
+            'verification_attempts' => $user->verification_attempts + 1,
+            'last_verification_attempt' => now()
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Verification code sent to your email! Please check your inbox.']);
+        }
+        return back()->with('success', 'Verification code sent to your email! Please check your inbox.');
+    }
+
+    public function verifyEmailCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'code' => 'required|string|size:6'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user->email_verified_at) {
+            return back()->with('info', 'Email is already verified.');
+        }
+
+        // Find valid verification code
+        $verificationCode = EmailVerificationCode::findValidCode($request->code, $user->id);
+
+        if (!$verificationCode) {
+            return back()->with('error', 'Invalid or expired verification code. Please request a new one.');
+        }
+
+        // Mark code as used
+        $verificationCode->markAsUsed();
+
+        // Update user verification status
+        $user->update([
+            'email_verified_at' => now(),
+            'email_verification_token' => null,
+            'email_verification_token_expires_at' => null,
+            'verification_status' => 'email_verified',
+            'verification_attempts' => 0
+        ]);
+
+        return redirect()->route('login')
+            ->with('success', 'Email verified successfully! You can now log in to your account.');
     }
 }
