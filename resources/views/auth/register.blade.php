@@ -76,7 +76,7 @@
 
         <!-- Register Form -->
         <div class="glass-effect rounded-3xl p-10 shadow-2xl">
-            <form method="POST" action="{{ route('register') }}" class="space-y-7" id="registerForm" novalidate>
+            <form method="POST" action="{{ route('register') }}" class="space-y-7" id="registerForm" enctype="multipart/form-data" novalidate>
                 @csrf
                 
                 @if ($errors->any())
@@ -143,6 +143,35 @@
                         </div>
                     </div>
                     <p class="text-xs text-purple-200 mt-1">Format: +63 912 345 6789 (11 digits total)</p>
+                </div>
+
+                <!-- Birth Date -->
+                <div class="relative">
+                    <label for="birth_date" class="block text-white font-semibold mb-3 text-sm uppercase tracking-wide">Birth Date</label>
+                    <div class="relative">
+                        <input type="date" id="birth_date" name="birth_date" value="{{ old('birth_date') }}" required 
+                               class="w-full px-5 py-4 rounded-xl bg-white/10 border border-white/30 text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent input-focus backdrop-blur-sm"
+                               max="{{ date('Y-m-d') }}">
+                    </div>
+                </div>
+
+                <!-- Gender -->
+                <div class="relative">
+                    <label for="gender" class="block text-white font-semibold mb-3 text-sm uppercase tracking-wide">Gender</label>
+                    <div class="relative">
+                        <select id="gender" name="gender" required 
+                                class="w-full px-5 py-4 rounded-xl bg-white border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent input-focus appearance-none cursor-pointer">
+                            <option value="">Select your gender</option>
+                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                            <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Barangay Selection -->
@@ -268,6 +297,13 @@
                         </button>
                     </div>
                     <p id="passwordMatchText" class="text-xs text-purple-200 mt-1"></p>
+                </div>
+
+
+                <!-- reCAPTCHA -->
+                <div class="relative">
+                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
                 </div>
 
                 <!-- Terms and Conditions -->
@@ -479,6 +515,7 @@
                 }
             }
             
+
             // Event Listeners
             passwordField.addEventListener('input', function() {
                 checkPasswordStrength(this.value);
@@ -529,6 +566,8 @@
                 const requiredFields = [
                     { field: document.getElementById('name'), message: 'Full name is required.' },
                     { field: document.getElementById('email'), message: 'Email address is required.' },
+                    { field: document.getElementById('birth_date'), message: 'Birth date is required.' },
+                    { field: document.getElementById('gender'), message: 'Please select your gender.' },
                     { field: document.getElementById('barangay'), message: 'Please select your barangay.' },
                     { field: passwordField, message: 'Password is required.' },
                     { field: passwordConfirmField, message: 'Please confirm your password.' }

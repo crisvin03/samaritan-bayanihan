@@ -1,0 +1,7 @@
+# reCAPTCHA Setup Instructions
+# Add these lines to your .env file:
+
+RECAPTCHA_SITE_KEY=6Lc6LeUieMrAAAAAP_rVIr4Zt1dJ_PaQvVEuDYqa-Q2
+RECAPTCHA_SECRET_KEY=6Lc6LeUieMrAAAAAAEo0YswzAx8DbgA3pkxF3a8PyQL
+
+# Replace the X's with your actual keys from Google reCAPTCHA Admin Console

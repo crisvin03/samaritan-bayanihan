@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\BenefitController as AdminBenefitController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\SystemSettingsController as AdminSystemSettingsController;
+use App\Http\Controllers\Admin\DocumentVerificationController as AdminDocumentVerificationController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\ProfileController as MemberProfileController;
 use App\Http\Controllers\Member\BenefitController as MemberBenefitController;
@@ -63,6 +64,16 @@ Route::get('/login/treasurer', [AuthController::class, 'showTreasurerLogin'])->n
 Route::post('/login/treasurer', [AuthController::class, 'treasurerLogin']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
+
+// Email Verification Routes
+Route::get('/verify-email', [App\Http\Controllers\VerificationController::class, 'showEmailVerification'])->name('verify-email');
+Route::get('/verify-email/verify', [App\Http\Controllers\VerificationController::class, 'verifyEmail'])->name('verify-email.verify');
+Route::post('/resend-verification', [App\Http\Controllers\VerificationController::class, 'resendVerification'])->name('resend-verification');
+
+// Phone Verification Routes
+Route::get('/verify-phone', [App\Http\Controllers\VerificationController::class, 'showPhoneVerification'])->name('verify-phone');
+Route::post('/send-phone-verification', [App\Http\Controllers\VerificationController::class, 'sendPhoneVerification'])->name('send-phone-verification');
+Route::post('/verify-phone', [App\Http\Controllers\VerificationController::class, 'verifyPhone'])->name('verify-phone.verify');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Role-based Dashboard Routes
@@ -112,6 +123,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('treasurers/{treasurer}/activate', [AdminTreasurerController::class, 'activate'])->name('treasurers.activate');
         Route::post('treasurers/{treasurer}/suspend', [AdminTreasurerController::class, 'suspend'])->name('treasurers.suspend');
         Route::post('contributions/{contribution}/validate', [AdminContributionController::class, 'validate'])->name('contributions.validate');
+        
+        // Document Verification Routes
+        Route::get('document-verification', [AdminDocumentVerificationController::class, 'index'])->name('document-verification.index');
+        Route::get('document-verification/{id}', [AdminDocumentVerificationController::class, 'show'])->name('document-verification.show');
+        Route::post('document-verification/{id}/approve', [AdminDocumentVerificationController::class, 'approve'])->name('document-verification.approve');
+        Route::post('document-verification/{id}/reject', [AdminDocumentVerificationController::class, 'reject'])->name('document-verification.reject');
         Route::post('benefits/{benefit}/approve', [AdminBenefitController::class, 'approve'])->name('benefits.approve');
         Route::post('benefits/{benefit}/reject', [AdminBenefitController::class, 'reject'])->name('benefits.reject');
         Route::post('benefits/{benefit}/disburse', [AdminBenefitController::class, 'disburse'])->name('benefits.disburse');
@@ -144,6 +161,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/announcements', [MemberAnnouncementController::class, 'index'])->name('announcements.index');
         Route::get('/announcements/{announcement}', [MemberAnnouncementController::class, 'show'])->name('announcements.show');
         Route::get('/passbook', [MemberPassbookController::class, 'index'])->name('passbook');
+        Route::post('/profile/upload-documents', [App\Http\Controllers\Member\ProfileController::class, 'uploadDocuments'])->name('profile.upload-documents');
     });
 
     // Barangay Treasurer Routes

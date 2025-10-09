@@ -33,6 +33,17 @@ class User extends Authenticatable
         'occupation',
         'status',
         'last_login_at',
+        'email_verification_token',
+        'email_verification_token_expires_at',
+        'phone_verification_code',
+        'phone_verification_code_expires_at',
+        'phone_verified',
+        'verification_status',
+        'rejection_reason',
+        'ip_address',
+        'user_agent',
+        'last_verification_attempt',
+        'verification_attempts',
     ];
 
     /**
@@ -57,6 +68,10 @@ class User extends Authenticatable
             'password' => 'hashed',
             'birth_date' => 'date',
             'last_login_at' => 'datetime',
+            'email_verification_token_expires_at' => 'datetime',
+            'phone_verification_code_expires_at' => 'datetime',
+            'phone_verified' => 'boolean',
+            'last_verification_attempt' => 'datetime',
         ];
     }
 
@@ -84,6 +99,11 @@ class User extends Authenticatable
     public function reviewedBenefits(): HasMany
     {
         return $this->hasMany(Benefit::class, 'reviewed_by');
+    }
+
+    public function documentVerifications(): HasMany
+    {
+        return $this->hasMany(DocumentVerification::class);
     }
 
     public function notifications(): MorphMany

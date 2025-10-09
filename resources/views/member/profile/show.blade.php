@@ -152,6 +152,29 @@
         </div>
         
         <div class="p-3 sm:p-4 lg:p-6">
+            <!-- Success Messages -->
+            @if(session('success'))
+                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg" id="successMessage">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        {{ session('success') }}
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        {{ session('error') }}
+                    </div>
+                </div>
+            @endif
+
             <!-- Profile Picture and Name Section -->
             <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-3 sm:space-y-0 sm:space-x-4 lg:space-x-6 mb-4 sm:mb-6 lg:mb-8 animate-card-float">
                 <div class="relative group flex-shrink-0">
@@ -167,7 +190,17 @@
                 <div class="flex-1 w-full sm:w-auto min-w-0">
                     <div class="bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-gray-200">
                         <h3 class="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-1 truncate">{{ auth()->user()->name }}</h3>
-                        <p class="text-gray-600 text-xs sm:text-sm">Member since {{ auth()->user()->created_at->format('M Y') }}</p>
+                        @if(auth()->user()->verification_status === 'approved')
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <p class="text-gray-600 text-xs sm:text-sm font-medium">Member since {{ auth()->user()->created_at->format('M d, Y') }}</p>
+                            </div>
+                        @else
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                <p class="text-red-600 text-xs sm:text-sm font-medium">Member Not Verified</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -247,26 +280,68 @@
                             <h4 class="text-xs font-semibold text-indigo-600 uppercase tracking-wide">Date of Membership</h4>
                         </div>
                     </div>
-                    <p class="text-xs sm:text-sm font-medium text-gray-900 leading-tight">{{ auth()->user()->created_at->format('M d, Y') }}</p>
+                    @if(auth()->user()->verification_status === 'approved')
+                        <p class="text-xs sm:text-sm font-medium text-gray-900 leading-tight">{{ auth()->user()->created_at->format('M d, Y') }}</p>
+                    @else
+                        <p class="text-xs sm:text-sm font-medium text-red-600 leading-tight">Not Verified</p>
+                    @endif
                 </div>
 
-                <!-- Member Status -->
-                <div class="group bg-gradient-to-br from-white to-orange-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-orange-100 hover:border-orange-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float-delayed">
+                <!-- Email Verification Status -->
+                <div class="group bg-gradient-to-br from-white to-green-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-green-100 hover:border-green-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float-delayed">
                     <div class="flex items-center space-x-2 mb-2">
-                        <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-md flex items-center justify-center shadow-lg">
-                            <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                        <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-md flex items-center justify-center shadow-lg">
+                            @if(auth()->user()->email_verified_at)
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            @else
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            @endif
                         </div>
                         <div>
-                            <h4 class="text-xs font-semibold text-orange-600 uppercase tracking-wide">Member Status</h4>
+                            <h4 class="text-xs font-semibold text-green-600 uppercase tracking-wide">Email Status</h4>
                         </div>
                     </div>
-                    <p class="text-xs sm:text-sm font-medium text-gray-900 leading-tight">Active Member</p>
+                    <p class="text-xs sm:text-sm font-medium leading-tight">
+                        @if(auth()->user()->email_verified_at)
+                            <span class="text-green-600">✓ Email Verified</span>
+                        @else
+                            <span class="text-red-600"> Email Not Verified</span>
+                        @endif
+                    </p>
                 </div>
+
             </div>
 
+            <!-- Document Upload Status Section -->
+            @if(auth()->user()->verification_status === 'pending')
+            <div class="bg-gradient-to-br from-white to-yellow-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-yellow-100 hover:border-yellow-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float mb-4">
+                <div class="flex items-center space-x-2 mb-3">
+                    <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-md flex items-center justify-center shadow-lg">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">Document Upload Status</h4>
+                        <p class="text-xs text-gray-600 leading-tight">Your documents are under review</p>
+                    </div>
+                </div>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
+                        <p class="text-yellow-700 text-sm font-medium">Documents Submitted - Awaiting Admin Review</p>
+                    </div>
+                    <p class="text-xs text-yellow-600 mt-1">We'll notify you once your documents have been reviewed.</p>
+                </div>
+            </div>
+            @endif
+
             <!-- Document Upload Section -->
+            @if(auth()->user()->verification_status !== 'approved')
             <div class="bg-gradient-to-br from-white to-gray-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-gray-100 hover:border-gray-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
                 <div class="flex items-center space-x-2 mb-3">
                     <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-gray-500 to-gray-600 rounded-md flex items-center justify-center shadow-lg">
@@ -276,19 +351,73 @@
                     </div>
                     <div>
                         <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">ID/Verification Documents</h4>
-                        <p class="text-xs text-gray-600 leading-tight">Upload your identification documents for verification</p>
+                        <p class="text-xs text-gray-600 leading-tight">Upload your identification documents for member verification</p>
                     </div>
                 </div>
-                <div class="border-2 border-dashed border-gray-300 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-300">
-                    <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                
+                <form action="{{ route('member.profile.upload-documents') }}" method="POST" enctype="multipart/form-data" id="documentUploadForm">
+                    @csrf
+                    
+                    @if ($errors->any())
+                        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="font-semibold">Please correct the following errors:</span>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <div class="border-2 border-dashed border-gray-300 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-300">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                     </svg>
-                    <p class="text-gray-600 text-xs sm:text-sm mb-1 leading-tight">Click to upload or drag and drop</p>
-                    <p class="text-xs text-gray-400">PNG, JPG, PDF up to 10MB</p>
+                        <p class="text-gray-600 text-xs sm:text-sm mb-1 leading-tight">Click to upload or drag and drop</p>
+                        <p class="text-xs text-gray-400">PNG, JPG, PDF up to 10MB each</p>
+                        <input type="file" id="documents" name="documents[]" multiple 
+                               accept=".jpg,.jpeg,.png,.pdf"
+                               class="hidden" required>
+                        <button type="button" id="uploadBtn" 
+                                class="mt-3 px-4 py-2 bg-blue-500/20 text-blue-600 rounded-lg hover:bg-blue-500/30 transition-colors">
+                            Choose Files
+                        </button>
+                        <div id="fileList" class="mt-3 text-xs text-gray-600"></div>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-end">
+                        <button type="submit" id="submitBtn" disabled
+                                class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                            Upload Documents
+                        </button>
+                    </div>
+                </form>
+            </div>
+            @else
+            <div class="bg-gradient-to-br from-white to-green-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-green-100 hover:border-green-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
+                <div class="flex items-center space-x-2 mb-3">
+                    <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-md flex items-center justify-center shadow-lg">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">Member Verification Complete</h4>
+                        <p class="text-xs text-gray-600 leading-tight">Your documents have been verified and approved</p>
+                    </div>
+                </div>
+                <div class="text-center p-4 bg-green-50 rounded-lg">
+                    <p class="text-green-600 text-sm font-medium">✓ You are now a verified member!</p>
                 </div>
             </div>
+            @endif
 
             <!-- Online Passbook Section -->
+            @if(auth()->user()->verification_status === 'approved')
             <div class="bg-gradient-to-br from-white to-blue-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float">
                 <div class="flex items-center space-x-2 mb-4">
                     <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-md flex items-center justify-center shadow-lg">
@@ -320,6 +449,7 @@
                     </a>
                 </div>
             </div>
+            @endif
 
             <!-- Action Buttons -->
             <div class="mt-3 sm:mt-4 lg:mt-6 flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2 lg:space-x-3">
@@ -332,5 +462,75 @@
             </div>
         </div>
     </div>
+
+    <!-- Document Upload JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-dismiss success message after 3 seconds
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                setTimeout(function() {
+                    successMessage.style.transition = 'opacity 0.5s ease-out';
+                    successMessage.style.opacity = '0';
+                    setTimeout(function() {
+                        successMessage.remove();
+                    }, 500);
+                }, 3000);
+            }
+            const uploadBtn = document.getElementById('uploadBtn');
+            const fileInput = document.getElementById('documents');
+            const fileList = document.getElementById('fileList');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (uploadBtn && fileInput && fileList && submitBtn) {
+                uploadBtn.addEventListener('click', function() {
+                    fileInput.click();
+                });
+                
+                fileInput.addEventListener('change', function() {
+                    const files = Array.from(this.files);
+                    fileList.innerHTML = '';
+                    
+                    if (files.length === 0) {
+                        fileList.innerHTML = '<p class="text-gray-400">No files selected</p>';
+                        submitBtn.disabled = true;
+                        return;
+                    }
+                    
+                    files.forEach((file, index) => {
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'flex items-center justify-between bg-white/50 rounded-lg p-2 mb-2';
+                        fileItem.innerHTML = `
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="text-gray-700 text-xs">${file.name}</span>
+                                <span class="text-gray-500 text-xs">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                            </div>
+                            <button type="button" class="text-red-500 hover:text-red-700" onclick="removeFile(${index})">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        `;
+                        fileList.appendChild(fileItem);
+                    });
+                    
+                    submitBtn.disabled = false;
+                });
+                
+                // Remove file function
+                window.removeFile = function(index) {
+                    const dt = new DataTransfer();
+                    const files = Array.from(fileInput.files);
+                    files.splice(index, 1);
+                    files.forEach(file => dt.items.add(file));
+                    fileInput.files = dt.files;
+                    fileInput.dispatchEvent(new Event('change'));
+                };
+            }
+        });
+    </script>
 @endsection
 

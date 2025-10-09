@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 07, 2025 at 11:11 AM
+-- Generation Time: Oct 09, 2025 at 05:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -39,6 +39,13 @@ CREATE TABLE `announcements` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `announcements`
+--
+
+INSERT INTO `announcements` (`id`, `title`, `content`, `priority`, `target_audience`, `is_published`, `created_by`, `published_at`, `created_at`, `updated_at`) VALUES
+(3, 'Test', 'Notify', 'low', 'all', 1, 1, NULL, '2025-10-07 21:48:26', '2025-10-07 21:48:26');
 
 -- --------------------------------------------------------
 
@@ -112,6 +119,29 @@ CREATE TABLE `contributions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `document_verifications`
+--
+
+CREATE TABLE `document_verifications` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `document_type` enum('id_card','passport','drivers_license','birth_certificate','other') NOT NULL,
+  `document_name` varchar(255) NOT NULL,
+  `file_path` varchar(255) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_size` varchar(255) NOT NULL,
+  `mime_type` varchar(255) NOT NULL,
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `rejection_reason` text DEFAULT NULL,
+  `reviewed_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `reviewed_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `failed_jobs`
 --
 
@@ -140,6 +170,13 @@ CREATE TABLE `jobs` (
   `available_at` int(10) UNSIGNED NOT NULL,
   `created_at` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `jobs`
+--
+
+INSERT INTO `jobs` (`id`, `queue`, `payload`, `attempts`, `reserved_at`, `available_at`, `created_at`) VALUES
+(1, 'default', '{\"uuid\":\"d064e02b-cd19-40f7-b7cb-737ee5590733\",\"displayName\":\"App\\\\Events\\\\NewAnnouncementNotification\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\",\"command\":\"O:38:\\\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\\\":15:{s:5:\\\"event\\\";O:38:\\\"App\\\\Events\\\\NewAnnouncementNotification\\\":1:{s:12:\\\"announcement\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:23:\\\"App\\\\Models\\\\Announcement\\\";s:2:\\\"id\\\";i:3;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}}s:5:\\\"tries\\\";N;s:7:\\\"timeout\\\";N;s:7:\\\"backoff\\\";N;s:13:\\\"maxExceptions\\\";N;s:10:\\\"connection\\\";N;s:5:\\\"queue\\\";N;s:12:\\\"messageGroup\\\";N;s:5:\\\"delay\\\";N;s:11:\\\"afterCommit\\\";N;s:10:\\\"middleware\\\";a:0:{}s:7:\\\"chained\\\";a:0:{}s:15:\\\"chainConnection\\\";N;s:10:\\\"chainQueue\\\";N;s:19:\\\"chainCatchCallbacks\\\";N;}\"},\"createdAt\":1759902506,\"delay\":null}', 0, NULL, 1759902506, 1759902506);
 
 -- --------------------------------------------------------
 
@@ -184,7 +221,38 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '2025_09_06_044810_add_role_fields_to_users_table', 1),
 (6, '2025_09_06_044815_create_contributions_table', 1),
 (7, '2025_09_06_044818_create_benefits_table', 1),
-(8, '2025_09_15_044408_create_announcements_table', 2);
+(8, '2025_09_15_044408_create_announcements_table', 2),
+(9, '2025_10_09_024152_add_verification_fields_to_users_table', 3),
+(10, '2025_10_09_024433_create_document_verifications_table', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`data`)),
+  `read` tinyint(1) NOT NULL DEFAULT 0,
+  `priority` varchar(255) NOT NULL DEFAULT 'medium',
+  `read_at` timestamp NULL DEFAULT NULL,
+  `notifiable_type` varchar(255) NOT NULL,
+  `notifiable_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `type`, `title`, `message`, `data`, `read`, `priority`, `read_at`, `notifiable_type`, `notifiable_id`, `created_at`, `updated_at`) VALUES
+(1, 'announcement', 'New Announcement', 'Notify', '{\"announcement_id\":3,\"title\":\"Test\"}', 0, 'high', NULL, 'App\\Models\\User', 3, '2025-10-07 21:48:26', '2025-10-07 21:48:26'),
+(2, 'announcement', 'New Announcement', 'Notify', '{\"announcement_id\":3,\"title\":\"Test\"}', 1, 'high', '2025-10-07 21:49:20', 'App\\Models\\User', 4, '2025-10-07 21:48:26', '2025-10-07 21:49:20');
 
 -- --------------------------------------------------------
 
@@ -243,10 +311,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('4xVnhpg0BURJfUIfncDnAdpjwyR8nGvZloaRblBs', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQ1ByQVlMcjNNSGp4Yng2MzQwbElEaTRBZFRJbHNKdlBDQkNDZG51YiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi90cmVhc3VyZXJzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1758003888),
-('mioYWJ3Umx6RvBgkcpv3FIa18bXqDeJfErXmF7QC', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiaTRNTHdhMGVVOU1wRlFZSUQ2eVAzT3RJN2ZhVDlCclBXZzRPMjhOZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9kYXNoYm9hcmQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1759635861),
-('tT0G62RBieTiRat1FmdnQF4POIutSvPTWsDqOc99', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiUUI3OE9HZFNFbUtCUVNDYzNuVEZtRzdheEtkbkF0cjRycFo3czNzSiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1759828171),
-('zKkopESaPowhTlcWAcgk4RzeklPok81aeIWguYMx', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoieW1NcmVxdGY0aENwOE5NbGhWRmtsdlU0QVJxRWdHek1nd1M5QnRMUCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1759827259);
+('njSUfse243K7f93PWBoR1N4Bt4o5edT2D695o3l7', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMVhBTXpyNGZyZ09GWVh2Z0t2WkFIWXhtMExWZnU1QTdrc1pIMUJKVyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9yZWdpc3RlciI7fX0=', 1759981871),
+('PqX73JP9D7fIWWnrvQPQBEbZnTEVtxZ2Qj5zLsSb', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiWDRFbUZuSGFkQjRhZDlxR1VBVFRVcEFDOHZTTzVYeWFJWEkzV2ZHNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9yZWdpc3RlciI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1759980674),
+('SetOwzKE4VU23vtLCQ5LAry3aNxAKfvSpJ9u9Bdr', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibHllV1NkOGhRcGR5R2ZGczMzOU55dmtPRlhRVGlYVUJkTzQwRVdWTCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9yZWdpc3RlciI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1759980291);
 
 -- --------------------------------------------------------
 
@@ -259,6 +326,8 @@ CREATE TABLE `users` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
+  `email_verification_token` varchar(255) DEFAULT NULL,
+  `email_verification_token_expires_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -266,6 +335,15 @@ CREATE TABLE `users` (
   `role_id` bigint(20) UNSIGNED NOT NULL DEFAULT 2,
   `barangay` varchar(255) DEFAULT NULL,
   `phone_number` varchar(255) DEFAULT NULL,
+  `phone_verification_code` varchar(255) DEFAULT NULL,
+  `phone_verification_code_expires_at` timestamp NULL DEFAULT NULL,
+  `phone_verified` tinyint(1) NOT NULL DEFAULT 0,
+  `verification_status` enum('pending','email_verified','phone_verified','documents_uploaded','approved','rejected') NOT NULL DEFAULT 'pending',
+  `rejection_reason` text DEFAULT NULL,
+  `ip_address` varchar(255) DEFAULT NULL,
+  `user_agent` varchar(255) DEFAULT NULL,
+  `last_verification_attempt` timestamp NULL DEFAULT NULL,
+  `verification_attempts` int(11) NOT NULL DEFAULT 0,
   `address` text DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
   `gender` enum('male','female','other') DEFAULT NULL,
@@ -278,10 +356,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role_id`, `barangay`, `phone_number`, `address`, `birth_date`, `gender`, `occupation`, `status`, `last_login_at`) VALUES
-(1, 'System Administrator', 'admin@bayanihan.com', NULL, '$2y$12$Zb8aTTOf9N09TZcRF.q1c.CV4NuiIxr2i2CLFrMqpWiviY5rYVu0C', NULL, '2025-09-11 02:14:38', '2025-09-11 02:14:38', 1, 'Admin Barangay', '+63 912 345 6789', '123 Admin Street, Admin City', '1990-01-01', 'other', 'System Administrator', 'active', NULL),
-(2, 'Barangay Treasurer', 'treasurer@bayanihan.com', NULL, '$2y$12$H9E8wsRXpCoesNWVZRZ62Ozh1vvlMWzqmjYnBxmA6hsaK8TGmwzQG', NULL, '2025-09-11 02:14:38', '2025-09-11 02:14:38', 3, 'Zone I (Poblacion)', '+63 912 345 6788', '456 Treasurer Street, Treasurer City', '1985-05-15', 'female', 'Barangay Treasurer', 'active', NULL),
-(70, 'Crisvin Habitsuela', 'crisvin@gmail.com', NULL, '$2y$12$zpjHl0rl3rr5T6ZHZq5n8e611kWaY4zoZkV3ydKYGxOC1NI3PXe26', NULL, '2025-09-14 22:30:27', '2025-09-14 22:30:27', 2, 'Aquino (Imelda)', '+63 934 723 2837', NULL, NULL, NULL, NULL, 'active', NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `email_verification_token`, `email_verification_token_expires_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role_id`, `barangay`, `phone_number`, `phone_verification_code`, `phone_verification_code_expires_at`, `phone_verified`, `verification_status`, `rejection_reason`, `ip_address`, `user_agent`, `last_verification_attempt`, `verification_attempts`, `address`, `birth_date`, `gender`, `occupation`, `status`, `last_login_at`) VALUES
+(1, 'System Administrator', 'admin@bayanihan.com', NULL, NULL, NULL, '$2y$12$Zb8aTTOf9N09TZcRF.q1c.CV4NuiIxr2i2CLFrMqpWiviY5rYVu0C', NULL, '2025-09-11 02:14:38', '2025-09-11 02:14:38', 1, 'Admin Barangay', '+63 912 345 6789', NULL, NULL, 0, 'pending', NULL, NULL, NULL, NULL, 0, '123 Admin Street, Admin City', '1990-01-01', 'other', 'System Administrator', 'active', NULL),
+(2, 'Barangay Treasurer', 'treasurer@bayanihan.com', NULL, NULL, NULL, '$2y$12$H9E8wsRXpCoesNWVZRZ62Ozh1vvlMWzqmjYnBxmA6hsaK8TGmwzQG', NULL, '2025-09-11 02:14:38', '2025-09-11 02:14:38', 3, 'Zone I (Poblacion)', '+63 912 345 6788', NULL, NULL, 0, 'pending', NULL, NULL, NULL, NULL, 0, '456 Treasurer Street, Treasurer City', '1985-05-15', 'female', 'Barangay Treasurer', 'active', NULL),
+(4, 'Crisvin Habitsuela', 'crisvin.habitsuela@sorsu.edu.ph', NULL, NULL, NULL, '$2y$12$3HYH9fHMxAih7u1JKtcFOeH7LkWIPquLbDMjc0E7ulfiAgE2k9Lai', NULL, '2025-09-11 02:17:15', '2025-10-07 22:09:43', 2, 'Benigno S. Aquino', '+63 912 638 6057', NULL, NULL, 0, 'pending', NULL, NULL, NULL, NULL, 0, NULL, '2004-08-30', 'male', 'opoop', 'active', NULL);
 
 --
 -- Indexes for dumped tables
@@ -325,6 +403,14 @@ ALTER TABLE `contributions`
   ADD KEY `contributions_status_contribution_date_index` (`status`,`contribution_date`);
 
 --
+-- Indexes for table `document_verifications`
+--
+ALTER TABLE `document_verifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `document_verifications_user_id_foreign` (`user_id`),
+  ADD KEY `document_verifications_reviewed_by_foreign` (`reviewed_by`);
+
+--
 -- Indexes for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -349,6 +435,13 @@ ALTER TABLE `job_batches`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `notifications_notifiable_type_notifiable_id_index` (`notifiable_type`,`notifiable_id`);
 
 --
 -- Indexes for table `password_reset_tokens`
@@ -387,7 +480,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `announcements`
 --
 ALTER TABLE `announcements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `benefits`
@@ -402,6 +495,12 @@ ALTER TABLE `contributions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `document_verifications`
+--
+ALTER TABLE `document_verifications`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -411,13 +510,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -429,7 +534,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -454,6 +559,13 @@ ALTER TABLE `benefits`
 ALTER TABLE `contributions`
   ADD CONSTRAINT `contributions_recorded_by_foreign` FOREIGN KEY (`recorded_by`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `contributions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `document_verifications`
+--
+ALTER TABLE `document_verifications`
+  ADD CONSTRAINT `document_verifications_reviewed_by_foreign` FOREIGN KEY (`reviewed_by`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `document_verifications_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `users`
