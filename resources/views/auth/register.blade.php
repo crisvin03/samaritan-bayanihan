@@ -372,6 +372,23 @@
                     </div>
                 </div>
 
+                <!-- Address -->
+                <div class="relative">
+                    <label for="address" class="block text-white font-semibold mb-2 text-xs uppercase tracking-wide">Address</label>
+                    <div class="relative">
+                        <input type="text" id="address" name="address" value="{{ old('address') }}" required 
+                               class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent input-focus backdrop-blur-sm"
+                               placeholder="Your complete address will be filled automatically"
+                               readonly>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <svg class="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Password -->
                 <div class="relative">
                     <label for="password" class="block text-white font-semibold mb-2 text-xs uppercase tracking-wide">Password</label>
@@ -539,6 +556,106 @@
                 }
             }
             
+            // Address Auto-fill based on Barangay Selection
+            const addressField = document.getElementById('address');
+            const barangayField = document.getElementById('barangay');
+            
+            // Address mapping for each barangay
+            const addressMapping = {
+                'A. Bonifacio (Tinurilan)': 'A. Bonifacio St., Tinurilan, Bulan Sorsogon',
+                'Abad Santos (Kambal)': 'Abad Santos St., Kambal, Bulan Sorsogon',
+                'Aguinaldo (Lipata Dako)': 'Aguinaldo St., Lipata Dako, Bulan Sorsogon',
+                'Antipolo': 'Antipolo St., Bulan Sorsogon',
+                'Aquino (Imelda)': 'Aquino St., Imelda, Bulan Sorsogon',
+                'Bical': 'Bical, Bulan Sorsogon',
+                'Beguin': 'Beguin, Bulan Sorsogon',
+                'Bonga': 'Bonga, Bulan Sorsogon',
+                'Butag': 'Butag, Bulan Sorsogon',
+                'Cadandanan': 'Cadandanan, Bulan Sorsogon',
+                'Calomagon': 'Calomagon, Bulan Sorsogon',
+                'Calpi': 'Calpi, Bulan Sorsogon',
+                'Cocok-Cabitan': 'Cocok-Cabitan, Bulan Sorsogon',
+                'Daganas': 'Daganas, Bulan Sorsogon',
+                'Danao': 'Danao, Bulan Sorsogon',
+                'Dolos': 'Dolos, Bulan Sorsogon',
+                'E. Quirino (Pinangomhan)': 'E. Quirino St., Pinangomhan, Bulan Sorsogon',
+                'Fabrica': 'Fabrica, Bulan Sorsogon',
+                'G. Del Pilar (Tanga)': 'G. Del Pilar St., Tanga, Bulan Sorsogon',
+                'Gate': 'Gate, Bulan Sorsogon',
+                'Inararan': 'Inararan, Bulan Sorsogon',
+                'J. Gerona (Biton)': 'J. Gerona St., Biton, Bulan Sorsogon',
+                'J.P. Laurel (Pon-od)': 'J.P. Laurel St., Pon-od, Bulan Sorsogon',
+                'Jamorawon': 'Jamorawon, Bulan Sorsogon',
+                'Libertad (Calle Putol)': 'Libertad St., Calle Putol, Bulan Sorsogon',
+                'Lajong': 'Lajong, Bulan Sorsogon',
+                'Magsaysay (Bongog)': 'Magsaysay St., Bongog, Bulan Sorsogon',
+                'Managa-naga': 'Managa-naga, Bulan Sorsogon',
+                'Marinab': 'Marinab, Bulan Sorsogon',
+                'Nasuje': 'Nasuje, Bulan Sorsogon',
+                'Montecalvario': 'Montecalvario, Bulan Sorsogon',
+                'N. Roque (Calayugan)': 'N. Roque St., Calayugan, Bulan Sorsogon',
+                'Namo': 'Namo, Bulan Sorsogon',
+                'Obrero': 'Obrero, Bulan Sorsogon',
+                'Osmeña (Lipata Saday)': 'Osmeña St., Lipata Saday, Bulan Sorsogon',
+                'Otavi': 'Otavi, Bulan Sorsogon',
+                'Padre Diaz': 'Padre Diaz, Bulan Sorsogon',
+                'Palale': 'Palale, Bulan Sorsogon',
+                'Quezon (Cabarawan)': 'Quezon St., Cabarawan, Bulan Sorsogon',
+                'R. Gerona (Butag)': 'R. Gerona St., Butag, Bulan Sorsogon',
+                'Recto': 'Recto, Bulan Sorsogon',
+                'Roxas (Busay)': 'Roxas St., Busay, Bulan Sorsogon',
+                'Sagrada': 'Sagrada, Bulan Sorsogon',
+                'San Francisco (Polot)': 'San Francisco St., Polot, Bulan Sorsogon',
+                'San Isidro (Cabugaan)': 'San Isidro St., Cabugaan, Bulan Sorsogon',
+                'San Juan Bag-o': 'San Juan Bag-o, Bulan Sorsogon',
+                'San Juan Daan': 'San Juan Daan, Bulan Sorsogon',
+                'San Rafael (Togbongon)': 'San Rafael St., Togbongon, Bulan Sorsogon',
+                'San Ramon': 'San Ramon, Bulan Sorsogon',
+                'San Vicente': 'San Vicente, Bulan Sorsogon',
+                'Santa Remedios': 'Santa Remedios, Bulan Sorsogon',
+                'Santa Teresita (Trece)': 'Santa Teresita St., Trece, Bulan Sorsogon',
+                'Sigad': 'Sigad, Bulan Sorsogon',
+                'Somagongsong': 'Somagongsong, Bulan Sorsogon',
+                'Tarhan': 'Tarhan, Bulan Sorsogon',
+                'Taromata': 'Taromata, Bulan Sorsogon',
+                'Zone 1 (Ilawod)': 'Zone 1, Ilawod, Bulan Sorsogon',
+                'Zone 2 (Sabang)': 'Zone 2, Sabang, Bulan Sorsogon',
+                'Zone 3 (Central)': 'Zone 3, Central, Bulan Sorsogon',
+                'Zone 4 (Central Business District)': 'Zone 4, Central Business District, Bulan Sorsogon',
+                'Zone 5 (Canipaan)': 'Zone 5, Canipaan, Bulan Sorsogon',
+                'Zone 6 (Baybay)': 'Zone 6, Baybay, Bulan Sorsogon',
+                'Zone 7 (Iraya)': 'Zone 7, Iraya, Bulan Sorsogon',
+                'Zone 8 (Loyo)': 'Zone 8, Loyo, Bulan Sorsogon'
+            };
+            
+            // Auto-fill address when barangay is selected
+            barangayField.addEventListener('change', function() {
+                const selectedBarangay = this.value;
+                if (selectedBarangay && addressMapping[selectedBarangay]) {
+                    addressField.value = addressMapping[selectedBarangay];
+                    addressField.classList.remove('border-red-400');
+                    
+                    // Add visual feedback for auto-fill
+                    addressField.style.backgroundColor = 'rgba(34, 197, 94, 0.1)';
+                    addressField.style.borderColor = 'rgba(34, 197, 94, 0.5)';
+                    
+                    // Reset styling after 2 seconds
+                    setTimeout(() => {
+                        addressField.style.backgroundColor = '';
+                        addressField.style.borderColor = '';
+                    }, 2000);
+                } else {
+                    addressField.value = '';
+                    addressField.style.backgroundColor = '';
+                    addressField.style.borderColor = '';
+                }
+            });
+            
+            // Initialize address if barangay is already selected (for form validation errors)
+            if (barangayField.value && addressMapping[barangayField.value]) {
+                addressField.value = addressMapping[barangayField.value];
+            }
+
             // Phone Number Formatting
             const phoneField = document.getElementById('phone_number');
             phoneField.addEventListener('input', function() {
@@ -683,6 +800,7 @@
                 const requiredFields = [
                     { field: document.getElementById('name'), message: 'Full name is required.' },
                     { field: document.getElementById('email'), message: 'Email address is required.' },
+                    { field: document.getElementById('address'), message: 'Address is required. Please select your barangay first.' },
                     { field: document.getElementById('birth_date'), message: 'Birth date is required.' },
                     { field: document.getElementById('gender'), message: 'Please select your gender.' },
                     { field: document.getElementById('barangay'), message: 'Please select your barangay.' },

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\EmailVerificationCode;
 use App\Notifications\EmailVerificationNotification;
 use App\Notifications\EmailVerificationCodeNotification;
+use App\Services\NotificationService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -42,6 +43,10 @@ class VerificationController extends Controller
             'email_verification_token_expires_at' => null,
             'verification_status' => 'email_verified'
         ]);
+
+        // Send email verification notification
+        $notificationService = new NotificationService();
+        $notificationService->createEmailVerificationNotification($user, 'email_verified');
 
         return redirect()->route('login')
             ->with('success', 'Email verified successfully! You can now log in to your account.');
@@ -231,6 +236,10 @@ class VerificationController extends Controller
             'verification_status' => 'email_verified',
             'verification_attempts' => 0
         ]);
+
+        // Send email verification notification
+        $notificationService = new NotificationService();
+        $notificationService->createEmailVerificationNotification($user, 'email_verified');
 
         return redirect()->route('login')
             ->with('success', 'Email verified successfully! You can now log in to your account.');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\DocumentVerification;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,6 +48,8 @@ class VerificationController extends Controller
             'notes' => 'nullable|string|max:500'
         ]);
 
+        $oldStatus = $user->status;
+        
         $user->update([
             'verification_status' => 'approved',
             'status' => 'active',
@@ -62,8 +65,9 @@ class VerificationController extends Controller
                 'reviewed_at' => now()
             ]);
 
-        // Send notification to user
-        // TODO: Implement notification system
+        // Send membership status notification
+        $notificationService = new NotificationService();
+        $notificationService->createMembershipStatusNotification($user, $oldStatus, 'approved');
 
         return redirect()->route('admin.verification.index')
             ->with('success', 'User verification approved successfully.');
@@ -75,6 +79,8 @@ class VerificationController extends Controller
             'rejection_reason' => 'required|string|max:1000'
         ]);
 
+        $oldStatus = $user->status;
+        
         $user->update([
             'verification_status' => 'rejected',
             'status' => 'inactive',
@@ -91,8 +97,9 @@ class VerificationController extends Controller
                 'reviewed_at' => now()
             ]);
 
-        // Send notification to user
-        // TODO: Implement notification system
+        // Send membership status notification
+        $notificationService = new NotificationService();
+        $notificationService->createMembershipStatusNotification($user, $oldStatus, 'rejected');
 
         return redirect()->route('admin.verification.index')
             ->with('success', 'User verification rejected.');

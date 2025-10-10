@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Events\NewAnnouncementNotification;
 use App\Events\BenefitStatusChanged;
 use App\Events\ContributionStatusChanged;
+use App\Events\EmailVerificationStatusChanged;
+use App\Events\MembershipStatusChanged;
 use Illuminate\Support\Facades\Broadcast;
 
 class NotificationService
@@ -156,5 +158,64 @@ class NotificationService
             ->where('notifiable_type', User::class)
             ->where('read', false)
             ->count();
+    }
+
+    /**
+     * Create a notification for email verification status change
+     */
+    public function createEmailVerificationNotification(User $user, string $status)
+    {
+        $message = match($status) {
+            'email_verified' => "Your email address has been successfully verified! You can now access all features of your account.",
+            'email_verification_failed' => "Email verification failed. Please try again or contact support if the problem persists.",
+            default => "Your email verification status has been updated to {$status}."
+        };
+
+        $notification = $user->notifications()->create([
+            'type' => 'email_verification',
+            'title' => 'Email Verification Update',
+            'message' => $message,
+            'data' => [
+                'status' => $status,
+                'user_id' => $user->id,
+            ],
+            'priority' => $status === 'email_verified' ? 'high' : 'medium',
+        ]);
+
+        // Broadcast the event
+        broadcast(new EmailVerificationStatusChanged($user, $status, $notification));
+
+        return $notification;
+    }
+
+    /**
+     * Create a notification for membership status change
+     */
+    public function createMembershipStatusNotification(User $user, string $oldStatus, string $newStatus)
+    {
+        $message = match($newStatus) {
+            'approved' => "Congratulations! Your membership has been approved. You now have full access to all member benefits and services.",
+            'rejected' => "Your membership application has been reviewed. Please check your account for details and contact support if you have questions.",
+            'active' => "Your membership is now active. Welcome to Samaritan Bayanihan Inc.!",
+            'inactive' => "Your membership status has been updated. Please contact support for more information.",
+            default => "Your membership status has been updated from {$oldStatus} to {$newStatus}."
+        };
+
+        $notification = $user->notifications()->create([
+            'type' => 'membership_status',
+            'title' => 'Membership Status Update',
+            'message' => $message,
+            'data' => [
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'user_id' => $user->id,
+            ],
+            'priority' => $newStatus === 'approved' ? 'high' : 'medium',
+        ]);
+
+        // Broadcast the event
+        broadcast(new MembershipStatusChanged($user, $oldStatus, $newStatus, $notification));
+
+        return $notification;
     }
 }
