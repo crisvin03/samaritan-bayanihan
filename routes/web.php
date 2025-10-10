@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementContro
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\SystemSettingsController as AdminSystemSettingsController;
 use App\Http\Controllers\Admin\DocumentVerificationController as AdminDocumentVerificationController;
+use App\Http\Controllers\Admin\VerificationController as AdminVerificationController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\ProfileController as MemberProfileController;
 use App\Http\Controllers\Member\BenefitController as MemberBenefitController;
@@ -79,7 +81,7 @@ Route::post('/verify-phone', [App\Http\Controllers\VerificationController::class
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Role-based Dashboard Routes
-Route::middleware(['auth', 'email.verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     // Redirect to appropriate dashboard based on role
     Route::get('/dashboard', function () {
         $user = auth()->user();
@@ -89,12 +91,16 @@ Route::middleware(['auth', 'email.verified'])->group(function () {
         } elseif ($user->isBarangayTreasurer()) {
             return redirect()->route('treasurer.dashboard');
         } else {
+            // Only members need email verification
+            if (!$user->email_verified_at) {
+                return redirect()->route('verify-email')->with('email', $user->email);
+            }
             return redirect()->route('member.dashboard');
         }
     })->name('dashboard');
 
     // Admin Routes
-    Route::middleware(['role:admin', 'email.verified'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::resource('members', AdminMemberController::class);
         Route::resource('treasurers', AdminTreasurerController::class);
@@ -126,6 +132,19 @@ Route::middleware(['auth', 'email.verified'])->group(function () {
         Route::post('treasurers/{treasurer}/suspend', [AdminTreasurerController::class, 'suspend'])->name('treasurers.suspend');
         Route::post('contributions/{contribution}/validate', [AdminContributionController::class, 'validate'])->name('contributions.validate');
         
+        // User Verification Routes
+        Route::get('verification', [AdminVerificationController::class, 'index'])->name('verification.index');
+        Route::get('verification/{user}', [AdminVerificationController::class, 'show'])->name('verification.show');
+        Route::post('verification/{user}/approve', [AdminVerificationController::class, 'approve'])->name('verification.approve');
+        Route::post('verification/{user}/reject', [AdminVerificationController::class, 'reject'])->name('verification.reject');
+        
+        // Admin Notification Routes
+        Route::get('notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');
+        Route::get('notifications/unread-count', [AdminNotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
+        Route::post('notifications/{notification}/mark-as-read', [AdminNotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+        Route::post('notifications/mark-all-read', [AdminNotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+        Route::post('notifications/clear-all', [AdminNotificationController::class, 'clearAll'])->name('notifications.clear-all');
+        
         // Document Verification Routes
         Route::get('document-verification', [AdminDocumentVerificationController::class, 'index'])->name('document-verification.index');
         Route::get('document-verification/{id}', [AdminDocumentVerificationController::class, 'show'])->name('document-verification.show');
@@ -147,7 +166,7 @@ Route::middleware(['auth', 'email.verified'])->group(function () {
         Route::get('/settings/health-check', [AdminSystemSettingsController::class, 'healthCheck'])->name('settings.health-check');
     });
 
-    // Member Routes
+    // Member Routes (require email verification)
     Route::middleware(['role:member', 'email.verified'])->prefix('member')->name('member.')->group(function () {
         Route::get('/dashboard', [MemberDashboardController::class, 'index'])->name('dashboard');
         Route::get('/profile', [MemberProfileController::class, 'show'])->name('profile.show');
@@ -167,7 +186,7 @@ Route::middleware(['auth', 'email.verified'])->group(function () {
     });
 
     // Barangay Treasurer Routes
-    Route::middleware(['role:barangay_treasurer', 'email.verified'])->prefix('treasurer')->name('treasurer.')->group(function () {
+    Route::middleware(['role:barangay_treasurer'])->prefix('treasurer')->name('treasurer.')->group(function () {
         Route::get('/dashboard', [TreasurerDashboardController::class, 'index'])->name('dashboard');
         Route::resource('members', TreasurerMemberController::class);
         Route::resource('contributions', TreasurerContributionController::class);
@@ -181,5 +200,12 @@ Route::middleware(['auth', 'email.verified'])->group(function () {
             Route::get('/benefits', [TreasurerReportController::class, 'benefits'])->name('benefits');
         });
         Route::resource('announcements', TreasurerAnnouncementController::class);
+        
+        // Treasurer Notification Routes
+        Route::get('notifications', [App\Http\Controllers\Treasurer\NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('notifications/unread-count', [App\Http\Controllers\Treasurer\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
+        Route::post('notifications/{notification}/mark-as-read', [App\Http\Controllers\Treasurer\NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+        Route::post('notifications/mark-all-read', [App\Http\Controllers\Treasurer\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+        Route::post('notifications/clear-all', [App\Http\Controllers\Treasurer\NotificationController::class, 'clearAll'])->name('notifications.clear-all');
     });
 });

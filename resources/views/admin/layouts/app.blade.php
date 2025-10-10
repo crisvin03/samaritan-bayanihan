@@ -328,6 +328,15 @@
                         <span class="sidebar-text">Announcements</span>
                     </a>
 
+                    <a href="{{ route('admin.notifications.index') }}" 
+                       class="sidebar-link flex items-center px-3 py-3 text-gray-700 rounded-lg {{ request()->routeIs('admin.notifications.*') ? 'active' : '' }}">
+                        <svg class="sidebar-icon w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.586 2.586a2 2 0 002.828 0L12.828 7H4.828zM4.828 17h8l-2.586-2.586a2 2 0 00-2.828 0L4.828 17z"></path>
+                        </svg>
+                        <span class="sidebar-text">Notifications</span>
+                        <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1" id="notification-badge" style="display: none;">0</span>
+                    </a>
+
                     <a href="{{ route('admin.settings.index') }}" 
                        class="sidebar-link flex items-center px-3 py-3 text-gray-700 rounded-lg {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                         <svg class="sidebar-icon w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -397,6 +406,89 @@
     </div>
 
     <!-- Mobile Menu Toggle (Hidden by default) -->
+    
+    <!-- Admin Notification System -->
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        // Load notification count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotificationCount();
+        });
+
+        // Function to load notification count
+        function loadNotificationCount() {
+            fetch('/admin/notifications/unread-count')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('notification-badge');
+                    if (data.count > 0) {
+                        badge.textContent = data.count;
+                        badge.style.display = 'inline-block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Error loading notification count:', error));
+        }
+
+        // Initialize Pusher for real-time notifications
+        const pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+            encrypted: true
+        });
+
+        // Subscribe to admin notifications channel
+        const channel = pusher.subscribe('admin-notifications');
+        
+        // Listen for new notifications
+        channel.bind('new-member-registered', function(data) {
+            updateNotificationCount();
+            showNotificationToast(data);
+        });
+
+        channel.bind('id-document-uploaded', function(data) {
+            updateNotificationCount();
+            showNotificationToast(data);
+        });
+
+        // Function to update notification count
+        function updateNotificationCount() {
+            loadNotificationCount();
+        }
+
+        // Function to show notification toast
+        function showNotificationToast(data) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-50 max-w-sm';
+            toast.innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.586 2.586a2 2 0 002.828 0L12.828 7H4.828zM4.828 17h8l-2.586-2.586a2 2 0 00-2.828 0L4.828 17z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-semibold text-gray-900">${data.title || 'New Notification'}</h4>
+                        <p class="text-sm text-gray-600 mt-1">${data.message || 'You have a new notification'}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+    </script>
     <div class="lg:hidden fixed top-4 left-4 z-50">
         <button id="mobile-menu-toggle" class="bg-white p-2 rounded-lg shadow-lg">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

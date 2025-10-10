@@ -338,6 +338,51 @@
                     <p class="text-xs text-yellow-600 mt-1">We'll notify you once your documents have been reviewed.</p>
                 </div>
             </div>
+            @elseif(auth()->user()->verification_status === 'rejected')
+            <div class="bg-gradient-to-br from-white to-red-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-red-100 hover:border-red-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float mb-4">
+                <div class="flex items-center space-x-2 mb-3">
+                    <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-md flex items-center justify-center shadow-lg">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">Document Review Status</h4>
+                        <p class="text-xs text-gray-600 leading-tight">Your documents were not approved</p>
+                    </div>
+                </div>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                        <p class="text-red-700 text-sm font-medium">Documents Rejected - Please Resubmit</p>
+                    </div>
+                    @if(auth()->user()->rejection_reason)
+                        <p class="text-xs text-red-600 mt-1"><strong>Reason:</strong> {{ auth()->user()->rejection_reason }}</p>
+                    @endif
+                    <p class="text-xs text-red-600 mt-1">Please upload new documents that meet our requirements.</p>
+                </div>
+            </div>
+            @elseif(auth()->user()->verification_status === 'documents_uploaded')
+            <div class="bg-gradient-to-br from-white to-blue-50/30 rounded-md sm:rounded-lg lg:rounded-xl p-3 sm:p-4 lg:p-6 border border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 animate-card-float mb-4">
+                <div class="flex items-center space-x-2 mb-3">
+                    <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-md flex items-center justify-center shadow-lg">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">Document Upload Status</h4>
+                        <p class="text-xs text-gray-600 leading-tight">Your documents have been uploaded successfully</p>
+                    </div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                        <p class="text-blue-700 text-sm font-medium">Documents Uploaded - Awaiting Review</p>
+                    </div>
+                    <p class="text-xs text-blue-600 mt-1">Your documents are in queue for admin review.</p>
+                </div>
+            </div>
             @endif
 
             <!-- Document Upload Section -->

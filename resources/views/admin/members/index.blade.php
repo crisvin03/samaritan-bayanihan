@@ -213,6 +213,28 @@
                                 Status
                             </div>
                         </th>
+                        <th class="px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider" style="width: 12%;">
+                            <div class="flex items-center">
+                                <div class="p-1 bg-purple-100 rounded-lg mr-1 sm:mr-2">
+                                    <svg class="w-3 h-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                    </svg>
+                                </div>
+                                <span class="hidden lg:inline">Verification</span>
+                                <span class="lg:hidden">Verify</span>
+                            </div>
+                        </th>
+                        <th class="px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider" style="width: 10%;">
+                            <div class="flex items-center">
+                                <div class="p-1 bg-green-100 rounded-lg mr-1 sm:mr-2">
+                                    <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <span class="hidden lg:inline">ID Preview</span>
+                                <span class="lg:hidden">ID</span>
+                            </div>
+                        </th>
                         <th class="hidden sm:table-cell px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider" style="width: 10%;">
                             <div class="flex items-center">
                                 <div class="p-1 bg-indigo-100 rounded-lg mr-1 sm:mr-2">
@@ -291,12 +313,89 @@
                                     <span class="sm:hidden">{{ ucfirst(substr($member->status, 0, 3)) }}</span>
                                 </span>
                             </td>
+                            <td class="px-2 sm:px-3 py-2 sm:py-3 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold shadow-sm
+                                    @if($member->verification_status === 'approved') bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-200
+                                    @elseif($member->verification_status === 'pending') bg-gradient-to-r from-yellow-100 to-amber-100 text-yellow-800 border border-yellow-200
+                                    @elseif($member->verification_status === 'email_verified') bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-800 border border-blue-200
+                                    @elseif($member->verification_status === 'documents_uploaded') bg-gradient-to-r from-purple-100 to-violet-100 text-purple-800 border border-purple-200
+                                    @elseif($member->verification_status === 'rejected') bg-gradient-to-r from-red-100 to-rose-100 text-red-800 border border-red-200
+                                    @else bg-gradient-to-r from-gray-100 to-slate-100 text-gray-800 border border-gray-200 @endif">
+                                    @if($member->verification_status === 'approved')
+                                        <div class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1 animate-pulse"></div>
+                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    @elseif($member->verification_status === 'pending')
+                                        <div class="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-1 animate-pulse"></div>
+                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    @elseif($member->verification_status === 'documents_uploaded')
+                                        <div class="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1 animate-pulse"></div>
+                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    @elseif($member->verification_status === 'rejected')
+                                        <div class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1"></div>
+                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    @endif
+                                    <span class="hidden sm:inline">{{ ucwords(str_replace('_', ' ', $member->verification_status)) }}</span>
+                                    <span class="sm:hidden">{{ ucwords(str_replace('_', ' ', substr($member->verification_status, 0, 4))) }}</span>
+                                </span>
+                            </td>
+                            <td class="px-2 sm:px-3 py-2 sm:py-3 whitespace-nowrap">
+                                @if($member->documentVerifications->where('status', 'pending')->count() > 0)
+                                    @php
+                                        $latestDocument = $member->documentVerifications->where('status', 'pending')->first();
+                                    @endphp
+                                    <div class="flex items-center">
+                                        <div class="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-lg border border-blue-200 mr-2">
+                                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-xs font-medium text-gray-900 truncate max-w-20" title="{{ $latestDocument->file_name }}">
+                                                {{ $latestDocument->file_name }}
+                                            </span>
+                                            <span class="text-xs text-gray-500">
+                                                {{ ucwords(str_replace('_', ' ', $latestDocument->document_type)) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="flex items-center">
+                                        <div class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-lg border border-gray-200 mr-2">
+                                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-xs text-gray-500">No documents</span>
+                                        </div>
+                                    </div>
+                                @endif
+                            </td>
                             <td class="hidden sm:table-cell px-2 sm:px-3 py-2 sm:py-3 whitespace-nowrap">
                                 <div class="text-xs font-semibold text-gray-900">{{ $member->created_at->format('M d, Y') }}</div>
                                 <div class="text-xs text-gray-500">{{ $member->created_at->diffForHumans() }}</div>
                             </td>
                             <td class="px-2 sm:px-3 py-2 sm:py-3 whitespace-nowrap text-right text-xs font-medium">
                                 <div class="flex flex-col sm:flex-row items-end sm:items-center space-y-1 sm:space-y-0 sm:space-x-1">
+                                    <!-- Verify Button - Show for users with pending verification -->
+                                    @if(in_array($member->verification_status, ['pending', 'email_verified', 'documents_uploaded']))
+                                    <a href="{{ route('admin.verification.show', $member) }}" 
+                                       class="group inline-flex items-center px-2 py-1 bg-gradient-to-r from-purple-100 to-violet-200 hover:from-purple-200 hover:to-violet-300 text-purple-800 text-xs font-semibold rounded transition-all duration-300 shadow-sm hover:shadow-md">
+                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                        </svg>
+                                        <span class="hidden sm:inline">Verify</span>
+                                    </a>
+                                    @endif
+                                    
                                     <a href="{{ route('admin.members.show', $member) }}" 
                                        class="group inline-flex items-center px-2 py-1 bg-gradient-to-r from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 text-blue-800 text-xs font-semibold rounded transition-all duration-300 shadow-sm hover:shadow-md">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -304,13 +403,6 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                         </svg>
                                         <span class="hidden sm:inline">View</span>
-                                    </a>
-                                    <a href="{{ route('admin.members.edit', $member) }}" 
-                                       class="group inline-flex items-center px-2 py-1 bg-gradient-to-r from-amber-100 to-yellow-200 hover:from-amber-200 hover:to-yellow-300 text-amber-800 text-xs font-semibold rounded transition-all duration-300 shadow-sm hover:shadow-md">
-                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                        </svg>
-                                        <span class="hidden sm:inline">Edit</span>
                                     </a>
                                     @if($member->status === 'active')
                                         <form method="POST" action="{{ route('admin.members.suspend', $member) }}" class="inline">
@@ -561,6 +653,7 @@
                 });
             });
         }
+
     });
 </script>
 @endpush

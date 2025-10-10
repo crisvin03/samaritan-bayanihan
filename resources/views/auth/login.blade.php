@@ -164,5 +164,110 @@
         </div>
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const rememberCheckbox = document.getElementById('remember');
+            const loginForm = document.querySelector('form');
+
+            // Load saved credentials on page load
+            loadSavedCredentials();
+
+            // Save credentials when remember me is checked and form is submitted
+            loginForm.addEventListener('submit', function(e) {
+                if (rememberCheckbox.checked) {
+                    saveCredentials();
+                } else {
+                    clearSavedCredentials();
+                }
+            });
+
+            // Auto-check remember me if credentials are loaded
+            if (emailInput.value && passwordInput.value) {
+                rememberCheckbox.checked = true;
+            }
+
+            // Clear credentials when remember me is unchecked
+            rememberCheckbox.addEventListener('change', function() {
+                if (!this.checked) {
+                    clearSavedCredentials();
+                }
+            });
+
+            function saveCredentials() {
+                const credentials = {
+                    email: emailInput.value,
+                    password: passwordInput.value,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('bayanihan_credentials', JSON.stringify(credentials));
+            }
+
+            function loadSavedCredentials() {
+                try {
+                    const saved = localStorage.getItem('bayanihan_credentials');
+                    if (saved) {
+                        const credentials = JSON.parse(saved);
+                        // Check if credentials are not too old (30 days)
+                        const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+                        if (credentials.timestamp > thirtyDaysAgo) {
+                            emailInput.value = credentials.email || '';
+                            passwordInput.value = credentials.password || '';
+                            
+                            // Add visual feedback that credentials were loaded
+                            if (credentials.email && credentials.password) {
+                                emailInput.style.borderColor = '#10b981';
+                                passwordInput.style.borderColor = '#10b981';
+                                
+                                // Add a subtle notification
+                                showNotification('Credentials loaded from saved data', 'success');
+                            }
+                        } else {
+                            // Clear old credentials
+                            clearSavedCredentials();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading saved credentials:', error);
+                    clearSavedCredentials();
+                }
+            }
+
+            function clearSavedCredentials() {
+                localStorage.removeItem('bayanihan_credentials');
+            }
+
+            function showNotification(message, type = 'info') {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg text-white text-sm font-medium z-50 transition-all duration-300 ${
+                    type === 'success' ? 'bg-green-500' : 'bg-blue-500'
+                }`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Auto-remove after 3 seconds
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            // Clear visual feedback after user starts typing
+            [emailInput, passwordInput].forEach(input => {
+                input.addEventListener('input', function() {
+                    this.style.borderColor = '';
+                });
+            });
+        });
+    </script>
 </body>
 </html>

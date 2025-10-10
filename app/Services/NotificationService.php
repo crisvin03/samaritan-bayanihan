@@ -166,7 +166,7 @@ class NotificationService
     public function createEmailVerificationNotification(User $user, string $status)
     {
         $message = match($status) {
-            'email_verified' => "Your email address has been successfully verified! You can now access all features of your account.",
+            'email_verified' => "Your email address has been successfully verified! You can now access your account.",
             'email_verification_failed' => "Email verification failed. Please try again or contact support if the problem persists.",
             default => "Your email verification status has been updated to {$status}."
         };
