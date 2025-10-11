@@ -473,8 +473,8 @@
                     <div>
                         <h4 class="text-xs sm:text-sm lg:text-base font-bold text-gray-900">Online Passbook</h4>
                         <p class="text-xs text-gray-600 leading-tight">View your digital savings passbook</p>
-                    </div>
                 </div>
+            </div>
                 
                 <div class="bg-white border-2 border-gray-200 rounded-lg shadow-lg p-4 text-center">
                     <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mx-auto mb-3">

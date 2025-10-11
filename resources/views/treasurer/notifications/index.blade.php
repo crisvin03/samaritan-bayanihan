@@ -88,11 +88,11 @@
 @section('content')
     <!-- Professional Page Header Card -->
     <div class="mb-10">
-        <div class="relative bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 rounded-3xl p-10 shadow-2xl overflow-hidden">
+        <div class="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 rounded-3xl p-10 shadow-2xl overflow-hidden">
             <!-- Animated Background Elements -->
-            <div class="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 animate-pulse"></div>
-            <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full -translate-y-48 translate-x-48 animate-float"></div>
-            <div class="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-full translate-y-40 -translate-x-40 animate-float-delayed"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-green-600/20 to-emerald-600/20 animate-pulse"></div>
+            <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-green-500/10 to-transparent rounded-full -translate-y-48 translate-x-48 animate-float"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-emerald-500/10 to-transparent rounded-full translate-y-40 -translate-x-40 animate-float-delayed"></div>
             
             <div class="relative z-10">
                 <div class="flex items-center justify-between">
@@ -104,13 +104,17 @@
                         </div>
                         <div>
                             <h1 class="text-4xl font-bold text-white mb-2 animate-slide-in-left">Barangay Notifications</h1>
-                            <p class="text-purple-100 text-xl animate-slide-in-left-delayed">Monitor activities in {{ auth()->user()->barangay }} barangay</p>
+                            <p class="text-green-100 text-xl animate-slide-in-left-delayed">Monitor activities in {{ auth()->user()->barangay }} barangay</p>
+                            <div class="mt-4 flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                <span class="text-sm text-green-100">Notification Center</span>
+                            </div>
                         </div>
                     </div>
                     <div class="hidden lg:flex items-center space-x-8 animate-slide-in-right">
                         <div class="text-right">
                             <div class="text-sm font-medium text-white">{{ now()->format('l, M d, Y') }}</div>
-                            <div class="text-xs text-purple-200">{{ now()->format('H:i A') }}</div>
+                            <div class="text-xs text-green-200">{{ now()->format('H:i A') }}</div>
                         </div>
                         <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl">
                             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,7 +135,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900 flex items-center">
-                            <svg class="w-7 h-7 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-7 h-7 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.586 2.586a2 2 0 002.828 0L12.828 7H4.828zM4.828 17h8l-2.586-2.586a2 2 0 00-2.828 0L4.828 17z"></path>
                             </svg>
                             {{ auth()->user()->barangay }} Barangay Activities
@@ -139,7 +143,7 @@
                         <p class="text-gray-600 mt-1">Monitor member activities and contributions in your barangay</p>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 border border-purple-200" id="notification-count">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200" id="notification-count">
                             {{ $notifications->total() }} Notifications
                         </span>
                         <form method="POST" action="{{ route('treasurer.notifications.clear-all') }}" class="inline">
@@ -158,11 +162,11 @@
             <!-- Notifications List -->
             <div class="divide-y divide-gray-200" id="notifications-list">
                 @foreach($notifications as $notification)
-                    <div class="group p-8 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 transition-all duration-300 notification-item {{ $notification->read ? 'opacity-75' : '' }} {{ $notification->priority === 'high' ? 'border-l-4 border-red-500 bg-red-50/30' : '' }}" data-notification-id="{{ $notification->id }}">
+                    <div class="group p-8 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-300 notification-item {{ $notification->read ? 'opacity-75' : '' }} {{ $notification->priority === 'high' ? 'border-l-4 border-red-500 bg-red-50/30' : '' }}" data-notification-id="{{ $notification->id }}">
                         <div class="flex items-start space-x-4">
                             <!-- Notification Icon -->
                             <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center group-hover:from-green-200 group-hover:to-green-300 transition-all duration-300">
                                     @if($notification->type === 'new_member')
                                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -172,7 +176,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                         </svg>
                                     @elseif($notification->type === 'benefit_request')
-                                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                                         </svg>
                                     @elseif($notification->type === 'contribution_made')
@@ -180,7 +184,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                                         </svg>
                                     @else
-                                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.586 2.586a2 2 0 002.828 0L12.828 7H4.828zM4.828 17h8l-2.586-2.586a2 2 0 00-2.828 0L4.828 17z"></path>
                                         </svg>
                                     @endif
@@ -191,11 +195,11 @@
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center space-x-3">
-                                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
+                                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-green-600 transition-colors">
                                             {{ $notification->title }}
                                         </h3>
                                         @if(!$notification->read)
-                                            <span class="inline-block w-3 h-3 bg-purple-600 rounded-full animate-pulse"></span>
+                                            <span class="inline-block w-3 h-3 bg-green-600 rounded-full animate-pulse"></span>
                                         @endif
                                         @if($notification->priority === 'high')
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 border border-red-200">
@@ -211,7 +215,7 @@
                                             {{ $notification->created_at->diffForHumans() }}
                                         </div>
                                         @if(!$notification->read)
-                                            <button onclick="markAsRead({{ $notification->id }})" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+                                            <button onclick="markAsRead({{ $notification->id }})" class="text-green-600 hover:text-green-800 text-sm font-medium">
                                                 Mark as read
                                             </button>
                                         @endif
@@ -244,7 +248,7 @@
                     </div>
                     <form method="POST" action="{{ route('treasurer.notifications.mark-all-read') }}" class="inline">
                         @csrf
-                        <button type="submit" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <button type="submit" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
@@ -258,22 +262,22 @@
         <!-- Professional Empty State -->
         <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-slide-in-up">
             <div class="text-center py-20 px-8">
-                <div class="w-24 h-24 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
-                    <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-24 h-24 bg-gradient-to-br from-green-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
+                    <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.586 2.586a2 2 0 002.828 0L12.828 7H4.828zM4.828 17h8l-2.586-2.586a2 2 0 00-2.828 0L4.828 17z"></path>
                     </svg>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">All Caught Up!</h3>
                 <p class="text-lg text-gray-600 mb-8 max-w-md mx-auto">You have no new notifications for {{ auth()->user()->barangay }} barangay. We'll notify you when there are new member activities or contributions.</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('treasurer.dashboard') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <a href="{{ route('treasurer.dashboard') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
                         </svg>
                         Go to Dashboard
                     </a>
-                    <a href="{{ route('treasurer.members.index') }}" class="inline-flex items-center px-8 py-4 bg-white border-2 border-gray-300 hover:border-purple-500 text-gray-700 hover:text-purple-600 font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md">
+                    <a href="{{ route('treasurer.members.index') }}" class="inline-flex items-center px-8 py-4 bg-white border-2 border-gray-300 hover:border-green-500 text-gray-700 hover:text-green-600 font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
@@ -354,7 +358,7 @@
         // Function to create notification element
         function createNotificationElement(data) {
             const div = document.createElement('div');
-            div.className = 'group p-8 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 transition-all duration-300 notification-item border-l-4 border-purple-500 bg-purple-50/30';
+            div.className = 'group p-8 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-300 notification-item border-l-4 border-green-500 bg-green-50/30';
             div.setAttribute('data-notification-id', data.id);
             
             const iconClass = getIconClass(data.type);
@@ -363,22 +367,22 @@
             div.innerHTML = `
                 <div class="flex items-start space-x-4">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center group-hover:from-green-200 group-hover:to-green-300 transition-all duration-300">
                             ${iconClass}
                         </div>
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between mb-3">
                             <div class="flex items-center space-x-3">
-                                <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
+                                <h3 class="text-lg font-bold text-gray-900 group-hover:text-green-600 transition-colors">
                                     ${data.title}
                                 </h3>
-                                <span class="inline-block w-3 h-3 bg-purple-600 rounded-full animate-pulse"></span>
+                                <span class="inline-block w-3 h-3 bg-green-600 rounded-full animate-pulse"></span>
                                 ${data.priority === 'high' ? '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 border border-red-200"><svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>Important</span>' : ''}
                             </div>
                             <div class="flex items-center space-x-2">
                                 <div class="text-sm text-gray-500">Just now</div>
-                                <button onclick="markAsRead(${data.id})" class="text-purple-600 hover:text-purple-800 text-sm font-medium">Mark as read</button>
+                                <button onclick="markAsRead(${data.id})" class="text-green-600 hover:text-green-800 text-sm font-medium">Mark as read</button>
                             </div>
                         </div>
                         <p class="text-gray-700 leading-relaxed mb-4">${data.message}</p>
@@ -403,11 +407,11 @@
                 case 'id_uploaded':
                     return '<svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>';
                 case 'benefit_request':
-                    return '<svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path></svg>';
+                    return '<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path></svg>';
                 case 'contribution_made':
                     return '<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path></svg>';
                 default:
-                    return '<svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.586 2.586a2 2 0 002.828 0L12.828 7H4.828zM4.828 17h8l-2.586-2.586a2 2 0 00-2.828 0L4.828 17z"></path></svg>';
+                    return '<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.586 2.586a2 2 0 002.828 0L12.828 7H4.828zM4.828 17h8l-2.586-2.586a2 2 0 00-2.828 0L4.828 17z"></path></svg>';
             }
         }
 
@@ -418,7 +422,7 @@
             toast.innerHTML = `
                 <div class="flex items-start space-x-3">
                     <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                             ${getIconClass(data.type)}
                         </div>
                     </div>
@@ -483,6 +487,37 @@
                     }, 300);
                 }, 3000);
             }
+            
+            // Re-initialize sidebar hover functionality for notifications page
+            setTimeout(function() {
+                const sidebar = document.getElementById('sidebar');
+                const mainContent = document.querySelector('.main-content');
+                
+                if (sidebar && mainContent) {
+                    let isCollapsed = true;
+                    let isMobile = window.innerWidth <= 768;
+                    
+                    // Remove existing listeners by cloning
+                    const newSidebar = sidebar.cloneNode(true);
+                    sidebar.parentNode.replaceChild(newSidebar, sidebar);
+                    
+                    if (!isMobile) {
+                        newSidebar.addEventListener('mouseenter', function() {
+                            if (isCollapsed) {
+                                isCollapsed = false;
+                                newSidebar.classList.remove('collapsed');
+                            }
+                        });
+                        
+                        newSidebar.addEventListener('mouseleave', function() {
+                            if (!isCollapsed) {
+                                isCollapsed = true;
+                                newSidebar.classList.add('collapsed');
+                            }
+                        });
+                    }
+                }
+            }, 100);
         });
     </script>
 @endsection

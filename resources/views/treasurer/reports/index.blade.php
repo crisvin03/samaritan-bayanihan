@@ -5,34 +5,44 @@
 @section('page-description', 'View comprehensive reports and analytics for your barangay')
 
 @section('content')
-    <!-- Header Section -->
-    <div class="mb-8">
-        <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-2xl p-8 text-white relative overflow-hidden">
-            <div class="absolute inset-0 bg-black opacity-10"></div>
+    <!-- Professional Page Header Card -->
+    <div class="mb-10">
+        <div class="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 rounded-3xl p-10 shadow-2xl overflow-hidden">
+            <!-- Animated Background Elements -->
+            <div class="absolute inset-0 bg-gradient-to-r from-green-600/20 to-emerald-600/20 animate-pulse"></div>
+            <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-green-500/10 to-transparent rounded-full -translate-y-48 translate-x-48 animate-float"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-emerald-500/10 to-transparent rounded-full translate-y-40 -translate-x-40 animate-float-delayed"></div>
+            
             <div class="relative z-10">
                 <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold mb-2">Reports & Analytics</h1>
-                        <p class="text-indigo-100 text-lg">Comprehensive insights for {{ $barangay }}</p>
-                        <div class="mt-4 flex items-center space-x-4">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
-                                <span class="text-sm text-indigo-100">Real-time Analytics</span>
+                    <div class="flex items-center space-x-6">
+                        <div class="w-20 h-20 bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center shadow-2xl animate-bounce-gentle">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="text-4xl font-bold text-white mb-2 animate-slide-in-left">Reports & Analytics</h1>
+                            <p class="text-green-100 text-xl animate-slide-in-left-delayed">Comprehensive insights for {{ $barangay }}</p>
+                            <div class="mt-4 flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                <span class="text-sm text-green-100">Real-time Analytics</span>
                             </div>
                         </div>
                     </div>
-                    <div class="hidden md:block">
-                        <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    <div class="hidden lg:flex items-center space-x-8 animate-slide-in-right">
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-white">{{ now()->format('l, M d, Y') }}</div>
+                            <div class="text-xs text-green-200">{{ now()->format('H:i A') }}</div>
+                        </div>
+                        <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Decorative elements -->
-            <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-y-16 translate-x-16"></div>
-            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full translate-y-12 -translate-x-12"></div>
         </div>
     </div>
 

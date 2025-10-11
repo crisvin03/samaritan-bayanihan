@@ -5,93 +5,131 @@
 @section('page-description', 'Monitor and forward benefit requests from your barangay members')
 
 @section('content')
-    <!-- Header Section -->
-    <div class="mb-8">
-        <div class="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-700 rounded-2xl p-8 text-white relative overflow-hidden">
-            <div class="absolute inset-0 bg-black opacity-10"></div>
+    <!-- Professional Page Header Card -->
+    <div class="mb-10">
+        <div class="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 rounded-3xl p-10 shadow-2xl overflow-hidden">
+            <!-- Animated Background Elements -->
+            <div class="absolute inset-0 bg-gradient-to-r from-green-600/20 to-emerald-600/20 animate-pulse"></div>
+            <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-green-500/10 to-transparent rounded-full -translate-y-48 translate-x-48 animate-float"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-emerald-500/10 to-transparent rounded-full translate-y-40 -translate-x-40 animate-float-delayed"></div>
+            
             <div class="relative z-10">
                 <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold mb-2">Monitor Benefit Requests</h1>
-                        <p class="text-purple-100 text-lg">Review and forward benefit requests from {{ $barangay }} members</p>
-                        <div class="mt-4 flex items-center space-x-4">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-                                <span class="text-sm text-purple-100">Benefit Request Monitoring</span>
+                    <div class="flex items-center space-x-6">
+                        <div class="w-20 h-20 bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center shadow-2xl animate-bounce-gentle">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="text-4xl font-bold text-white mb-2 animate-slide-in-left">Monitor Benefit Requests</h1>
+                            <p class="text-green-100 text-xl animate-slide-in-left-delayed">Review and forward benefit requests from {{ $barangay }} members</p>
+                            <div class="mt-4 flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                <span class="text-sm text-green-100">Benefit Request Monitoring</span>
                             </div>
                         </div>
                     </div>
-                    <div class="hidden md:block">
-                        <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    <div class="hidden lg:flex items-center space-x-8 animate-slide-in-right">
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-white">{{ now()->format('l, M d, Y') }}</div>
+                            <div class="text-xs text-green-200">{{ now()->format('H:i A') }}</div>
+                        </div>
+                        <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Decorative elements -->
-            <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-y-16 translate-x-16"></div>
-            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full translate-y-12 -translate-x-12"></div>
         </div>
     </div>
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <!-- Total Requests -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+        <!-- Total Members Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-20 h-20 bg-blue-100 rounded-full -translate-y-10 translate-x-10"></div>
             <div class="flex items-center justify-between mb-4">
-                <div class="p-3 bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl shadow-lg">
+                <div class="p-3 bg-blue-500 rounded-xl shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-right">
+                    <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">Total</div>
+                    <div class="text-xs text-blue-600 font-semibold">Active</div>
+                </div>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Total Members</p>
+                <p class="text-3xl font-bold text-gray-900 mb-2">{{ $stats['total_members'] ?? 0 }}</p>
+                <p class="text-sm text-gray-600">Registered members</p>
+            </div>
+        </div>
+
+        <!-- Total Contributions Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-20 h-20 bg-green-100 rounded-full -translate-y-10 translate-x-10"></div>
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-3 bg-green-500 rounded-xl shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                    </svg>
+                </div>
+                <div class="text-right">
+                    <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">Total</div>
+                    <div class="text-xs text-green-600 font-semibold">Collected</div>
+                </div>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Total Contributions</p>
+                <p class="text-3xl font-bold text-gray-900 mb-2">₱{{ number_format($stats['total_contributions'] ?? 0, 2) }}</p>
+                <p class="text-sm text-gray-600">All time</p>
+            </div>
+        </div>
+
+        <!-- Total Benefits Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-20 h-20 bg-purple-100 rounded-full -translate-y-10 translate-x-10"></div>
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-3 bg-purple-500 rounded-xl shadow-lg">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                 </div>
-                <span class="text-sm text-gray-500">Total Requests</span>
+                <div class="text-right">
+                    <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">Total</div>
+                    <div class="text-xs text-purple-600 font-semibold">Processed</div>
+                </div>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900">{{ $stats['total_requests'] }}</h3>
-            <p class="text-sm text-gray-600 mt-1">All benefit requests</p>
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Total Benefits</p>
+                <p class="text-3xl font-bold text-gray-900 mb-2">{{ $stats['total_requests'] ?? 0 }}</p>
+                <p class="text-sm text-gray-600">All requests</p>
+            </div>
         </div>
 
-        <!-- Pending Requests -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+        <!-- Pending Benefits Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-20 h-20 bg-orange-100 rounded-full -translate-y-10 translate-x-10"></div>
             <div class="flex items-center justify-between mb-4">
-                <div class="p-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl shadow-lg">
+                <div class="p-3 bg-orange-500 rounded-xl shadow-lg">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <span class="text-sm text-gray-500">Pending</span>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-900">{{ $stats['pending_requests'] }}</h3>
-            <p class="text-sm text-gray-600 mt-1">Awaiting review</p>
-        </div>
-
-        <!-- Approved Requests -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-            <div class="flex items-center justify-between mb-4">
-                <div class="p-3 bg-gradient-to-br from-green-400 to-green-500 rounded-xl shadow-lg">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0  0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
+                <div class="text-right">
+                    <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">Pending</div>
+                    <div class="text-xs text-orange-600 font-semibold">Needs attention</div>
                 </div>
-                <span class="text-sm text-gray-500">Approved</span>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900">{{ $stats['approved_requests'] }}</h3>
-            <p class="text-sm text-gray-600 mt-1">Forwarded to admin</p>
-        </div>
-
-        <!-- Rejected Requests -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-            <div class="flex items-center justify-between mb-4">
-                <div class="p-3 bg-gradient-to-br from-red-400 to-red-500 rounded-xl shadow-lg">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </div>
-                <span class="text-sm text-gray-500">Rejected</span>
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Pending Benefits</p>
+                <p class="text-3xl font-bold text-gray-900 mb-2">{{ $stats['pending_requests'] ?? 0 }}</p>
+                <p class="text-sm text-gray-600">Awaiting review</p>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900">{{ $stats['rejected_requests'] }}</h3>
-            <p class="text-sm text-gray-600 mt-1">Not approved</p>
         </div>
     </div>
 

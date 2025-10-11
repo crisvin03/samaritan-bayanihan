@@ -30,10 +30,10 @@
         }
         .sidebar-link.active {
             background-color: #e5e7eb;
-            border-right: 3px solid #3b82f6;
+            border-right: 3px solid #10b981;
         }
         .sidebar-link.active .sidebar-icon {
-            color: #3b82f6;
+            color: #10b981;
         }
         .sidebar-link.active .sidebar-text {
             color: #1f2937;
@@ -42,6 +42,7 @@
         
         /* Collapsible Sidebar Styles */
         .sidebar {
+            width: 16rem;
             transition: width 0.3s ease, transform 0.3s ease;
             overflow: hidden;
             position: fixed;
@@ -75,12 +76,9 @@
             .main-content {
                 margin-left: 4rem;
                 transition: margin-left 0.3s ease;
-                overflow-x: hidden;
-                max-width: calc(100vw - 4rem);
             }
             .sidebar:not(.collapsed) + .main-content {
                 margin-left: 16rem;
-                max-width: calc(100vw - 16rem);
             }
         }
         .sidebar.collapsed .sidebar-text {
@@ -259,7 +257,7 @@
     
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="sidebar bg-white shadow-lg border-r border-gray-200 collapsed" id="sidebar">
+        <div class="sidebar bg-white shadow-lg border-r border-gray-200 collapsed flex flex-col" id="sidebar">
             <!-- Header -->
             <div class="sidebar-header border-b border-gray-200 p-4">
                 <div class="flex items-center">
@@ -335,27 +333,26 @@
                         <span class="sidebar-text">Notifications</span>
                         <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1" id="notification-badge" style="display: none;">0</span>
                     </a>
+
                 </div>
             </nav>
 
             <!-- User Info -->
             <div class="mt-auto border-t border-gray-200 bg-white">
                 <div class="user-info-section p-3">
-                    <div class="user-section">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
-                                <span class="text-white text-lg font-bold">B</span>
-                            </div>
-                            <div class="user-info-text">
-                                <div class="text-sm font-medium text-gray-900">{{ auth()->user()->name }}</div>
-                                <div class="text-xs text-gray-500">Treasurer</div>
-                            </div>
+                    <div class="user-section flex items-center mb-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-white text-sm font-semibold">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                        </div>
+                        <div class="user-info-text ml-3">
+                            <p class="text-sm font-medium text-gray-800">{{ auth()->user()->name }}</p>
+                            <p class="text-xs text-gray-500">Treasurer</p>
                         </div>
                     </div>
-                    <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <button type="submit" class="logout-button sidebar-link flex items-center w-full px-3 py-2 text-gray-700 rounded-lg hover:bg-red-50 hover:text-red-600">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                             </svg>
                             <span class="sidebar-text">Logout</span>
@@ -504,15 +501,13 @@
                     });
                 });
             }
+
+            // Load notification count
+            loadNotificationCount();
         });
 
         // Treasurer Notification System
         // Load notification count on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadNotificationCount();
-        });
-
-        // Function to load notification count
         function loadNotificationCount() {
             fetch('/treasurer/notifications/unread-count')
                 .then(response => response.json())
@@ -527,6 +522,7 @@
                 })
                 .catch(error => console.error('Error loading notification count:', error));
         }
+
 
         // Initialize Pusher for real-time notifications
         const pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
@@ -603,6 +599,7 @@
                 toast.remove();
             }, 5000);
         }
+
     </script>
 </body>
 </html>
